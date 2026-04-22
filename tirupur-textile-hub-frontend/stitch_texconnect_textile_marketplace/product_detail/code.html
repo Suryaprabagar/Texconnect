@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#faf8ff",
+                    "on-primary-fixed-variant": "#003ea8",
+                    "primary-fixed-dim": "#b4c5ff",
+                    "on-secondary-container": "#693300",
+                    "on-surface-variant": "#434655",
+                    "on-error": "#ffffff",
+                    "inverse-surface": "#2e3039",
+                    "on-background": "#191b23",
+                    "inverse-primary": "#b4c5ff",
+                    "tertiary-container": "#bc4800",
+                    "inverse-on-surface": "#f0f0fb",
+                    "primary-fixed": "#dbe1ff",
+                    "surface-tint": "#0053db",
+                    "primary-container": "#2563eb",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#d9d9e5",
+                    "surface": "#faf8ff",
+                    "on-secondary-fixed-variant": "#713700",
+                    "outline-variant": "#c3c6d7",
+                    "on-secondary-fixed": "#301400",
+                    "tertiary-fixed": "#ffdbcd",
+                    "primary": "#004ac6",
+                    "on-primary": "#ffffff",
+                    "surface-container-highest": "#e1e2ed",
+                    "on-tertiary-fixed": "#360f00",
+                    "on-primary-fixed": "#00174b",
+                    "surface-container-high": "#e7e7f3",
+                    "outline": "#737686",
+                    "secondary-fixed": "#ffdcc5",
+                    "on-tertiary-container": "#ffede6",
+                    "secondary": "#944a00",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container": "#ededf9",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#eeefff",
+                    "background": "#faf8ff",
+                    "on-secondary": "#ffffff",
+                    "on-surface": "#191b23",
+                    "on-tertiary-fixed-variant": "#7d2d00",
+                    "tertiary-fixed-dim": "#ffb596",
+                    "surface-container-low": "#f3f3fe",
+                    "secondary-container": "#fd933d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "xl": "32px",
+                    "sm": "12px",
+                    "gutter": "12px",
+                    "xs": "8px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "container-margin": "16px"
+            },
+            "fontFamily": {
+                    "h3": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "label-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "h2": ["Inter"],
+                    "h1": ["Inter"],
+                    "caption": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                    "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .swatch-border {
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="bg-surface-bright text-on-surface font-body-md antialiased">
+<!-- SideNavBar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-950 shadow-[4px_0_12px_rgba(0,0,0,0.05)] z-50 flex flex-col py-6">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-black text-slate-900 dark:text-white tracking-tighter">TextileLink</h1>
+<p class="font-['Inter'] text-sm font-medium tracking-tight text-slate-500">B2B Marketplace</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Inter'] text-sm font-medium">Home</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-blue-600 dark:text-blue-400 font-bold border-r-4 border-blue-600 dark:border-blue-400 bg-blue-50/50 dark:bg-blue-900/20 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="storefront">storefront</span>
+<span class="font-['Inter'] text-sm font-medium">Marketplace</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="add_box">add_box</span>
+<span class="font-['Inter'] text-sm font-medium">Post Requirement</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-['Inter'] text-sm font-medium">Messages</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-3 rounded-lg text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition-colors duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-['Inter'] text-sm font-medium">Profile</span>
+</a>
+</nav>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 border-b border-slate-100 dark:border-slate-800 bg-white/80 dark:bg-slate-950/80 backdrop-blur-md z-40 flex items-center justify-between px-8 w-full">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-lg">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-2 focus:ring-blue-500 transition-all" placeholder="Search fabrics, yarns, or manufacturers..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-50 dark:hover:bg-slate-900 rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+</button>
+<button class="hover:bg-slate-50 dark:hover:bg-slate-900 rounded-full p-2 transition-colors">
+<span class="material-symbols-outlined text-slate-500" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 rounded-full bg-slate-200 overflow-hidden ml-2">
+<img class="h-full w-full object-cover" data-alt="professional profile photo of a textile procurement manager in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe4Az2M5CzobKz6B1tX_2R29_zrEdAjcZNu0_9o2un2o_L1ve5Whgaop_WWH-mIw1vIT3r9K-BE67-KI_Hqydhq5SUjEtO2C6i-0CxtIWdaKuT2C3Bumu9ndvY0urvpXvRR0qHPlfItFV2yXc6pJfW168LCjXQn0GZ43-KuXIJuHOUbZO538SGdiwRVwBRrUE6iN9bYwn_UHR2HWopybMcaD_W7HMFJ1PeKhy0P14WHtGA_wssqJxI84UJB4Cdgwlf3HWOwDimZtYy"/>
+</div>
+</div>
+</header>
+<main class="ml-64 mt-16 p-lg">
+<div class="max-w-7xl mx-auto">
+<!-- Breadcrumbs -->
+<nav class="flex items-center gap-2 mb-lg text-slate-500 font-label-sm">
+<a class="hover:text-primary" href="#">Marketplace</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<a class="hover:text-primary" href="#">Sustainable Fabrics</a>
+<span class="material-symbols-outlined text-sm">chevron_right</span>
+<span class="text-on-surface">Organic Cotton Twill</span>
+</nav>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-xl">
+<!-- Left Column: Image Section -->
+<div class="lg:col-span-7 space-y-md">
+<div class="aspect-[4/5] w-full rounded-xl overflow-hidden bg-white shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<img class="w-full h-full object-cover" data-alt="high-resolution close-up of premium organic cotton twill fabric with visible diagonal weave texture in a soft cream color" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv00cAFjq7wqLTyRtp5izon4Fz3jdUhytqlm5pbgqam8S4BK5y2QXogrkoMP7fA3OQ1e1w0YxknRKeY7A4TCUjvW9PA3AqTiuzjkoIHMRFErWj4yJt5UgxmYY6Z_hzyOZkUwXCnOFs9Fn_vKMaHAA_i2Qcj5LtJCCyDyrjbbVPXQudSKDLD795MY3HMeUBqLiqXmqpZ3i3GDKwpsFrOHpSRDiimiXVZXu6aaWcOyMGkdSBwwt8POF5buZuYwAGL9czgIWJ6qxstYeH"/>
+</div>
+<div class="grid grid-cols-4 gap-md">
+<div class="aspect-square rounded-xl overflow-hidden cursor-pointer border-2 border-primary shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<img class="w-full h-full object-cover" data-alt="close-up weave detail of organic cotton twill fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXZJlVrIrRL1lJKFJUc0F5MkXh36DkekR6JXRc--1egCBFyI_zCmQF8hn1k58Yv_sgWCQ1S5ZLrMyqh1uOedckTNt6gVMHYtwDaoHCoUpBYjjAtOadJq_VJdVo9h5BH7doPllT1hW7olIgetCTIeZ6lqpV_YM1ZzTbeUZHhpDv6ImKGFqs9vxWlM-oIFIXerS-PYRYPQO-oBbF7sKJQu964lklihh1EYqGY8fiZF3octZ-nwHDDxZcDjsaaYYuVxLEyp7e_5cjRmso"/>
+</div>
+<div class="aspect-square rounded-xl overflow-hidden cursor-pointer hover:border-slate-300 border-2 border-transparent transition-all shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<img class="w-full h-full object-cover" data-alt="folded stack of various colored cotton fabrics showing softness and drape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhapV04TA6kC_gios_37IayQ3EtK8WQzyCDiAqvkLiQtxJXL1yWe6y96TlEbYTqi1wqTlz-H2XQ_Br1nangIlNT98IrB7Q0zjSUJpV6prORlWroLZLZ_Z6gP4PLtu9C2lgBVPnhX3AB8qugew__MmpILxJuHS0Tocoy5ndafkxg3oTIcJk2VjzbFZXVpJP1LbWHZLgPNL9vq0LJc1P-FtMg6jHowMh9-1z1HDl6XdCeqGRnYnegQGpj2FTMB0r5CGbRnaUjgpdl6y6"/>
+</div>
+<div class="aspect-square rounded-xl overflow-hidden cursor-pointer hover:border-slate-300 border-2 border-transparent transition-all shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<img class="w-full h-full object-cover" data-alt="macro texture of textile fibers under bright natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHxJJ6JgyGbEAM5yTlm-_-ZGgTuGx6cR59GjLtmaY02HXxFZtEI1qBcAA1gfabnRUHBVFGGnHNm8nPo2Q4oIH9FngIaL3aOp5z9XVTy6bYqbgPYXpB0Z5oQ65gVZPanv2I06iK0iZUYQb19ycNGNPo0Pyr9a1_nsB0wP5B1zb3sJN0c2fDun8GkMKsS5p57jU2EmkrkRjThCK1MkTILRAIMGOy6d4krJ-sanPDPBPpx7yUUTENre2NIqLmbH1u_w2cQS-WEjB2HUsj"/>
+</div>
+<div class="aspect-square rounded-xl overflow-hidden cursor-pointer hover:border-slate-300 border-2 border-transparent transition-all relative shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<img class="w-full h-full object-cover brightness-50" data-alt="textile factory floor with rolls of finished white fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjaJozaeWHYn_Stl8fEM4X-jN4shv63qvPG0rTHHqpT6T0Tzdosok-OFgHPMQV7xLM2M4tUHHWUAwVyMWumy4SUUEDArbDNIpv1tZowN69H9TceApWOzcykwlNWhA45VqACjS3sOk3RW3LuJfP-sY2wiIxuflRIzhT4V0mhsjfkIxBb38b7J0M24RaUlq1K_RwyUGS9Cy9Tv7cN2ZCYXXMsjzoCqVUkSWngMsp7-Gp2xQqvroAYsp57WnENL-ljnTFAKWCn9gBnyW8"/>
+<div class="absolute inset-0 flex items-center justify-center text-white font-label-md">+4 View More</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Details Section -->
+<div class="lg:col-span-5 flex flex-col gap-lg">
+<div class="bg-white p-lg rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex justify-between items-start mb-md">
+<div>
+<span class="bg-primary-container/10 text-primary px-3 py-1 rounded-full text-xs font-label-md mb-xs inline-block">GOTS Certified</span>
+<h2 class="font-h1 text-h1 text-on-surface mb-xs">Premium Organic Cotton Twill</h2>
+<p class="text-slate-500 font-body-md">Manufacturer: <span class="text-primary font-semibold">EcoWeave Solutions Ltd.</span></p>
+</div>
+<button class="p-2 hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-slate-400">favorite</span>
+</button>
+</div>
+<div class="flex items-baseline gap-2 mb-lg">
+<span class="font-h2 text-h2 text-primary">$4.50 - $6.20</span>
+<span class="text-slate-400 font-label-md">/ Meter</span>
+</div>
+<div class="grid grid-cols-2 gap-md mb-lg">
+<div class="bg-surface-container-low p-md rounded-lg">
+<p class="text-slate-500 text-xs font-label-sm uppercase tracking-wider mb-1">Min. Order (MOQ)</p>
+<p class="font-h3 text-h3 text-on-surface">500 Meters</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-lg">
+<p class="text-slate-500 text-xs font-label-sm uppercase tracking-wider mb-1">Lead Time</p>
+<p class="font-h3 text-h3 text-on-surface">14-21 Days</p>
+</div>
+</div>
+<div class="space-y-lg">
+<div>
+<h3 class="font-label-md text-on-surface mb-sm">Available Colors</h3>
+<div class="flex flex-wrap gap-sm">
+<div class="w-10 h-10 rounded-lg bg-[#F5F5DC] swatch-border ring-2 ring-primary ring-offset-2 cursor-pointer" title="Natural Cream"></div>
+<div class="w-10 h-10 rounded-lg bg-[#2F4F4F] swatch-border cursor-pointer hover:ring-2 hover:ring-slate-300 hover:ring-offset-2" title="Dark Slate"></div>
+<div class="w-10 h-10 rounded-lg bg-[#708090] swatch-border cursor-pointer hover:ring-2 hover:ring-slate-300 hover:ring-offset-2" title="Slate Gray"></div>
+<div class="w-10 h-10 rounded-lg bg-[#E9DCC9] swatch-border cursor-pointer hover:ring-2 hover:ring-slate-300 hover:ring-offset-2" title="Linen"></div>
+<div class="w-10 h-10 rounded-lg bg-[#000000] swatch-border cursor-pointer hover:ring-2 hover:ring-slate-300 hover:ring-offset-2" title="Jet Black"></div>
+</div>
+</div>
+<div class="flex flex-col gap-md pt-md">
+<button class="w-full h-12 bg-primary text-white rounded-xl font-label-md hover:bg-on-primary-fixed-variant shadow-[0_8px_20px_rgba(37,99,235,0.25)] active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">request_quote</span>
+                                    Request Quote
+                                </button>
+<button class="w-full h-12 border-2 border-slate-200 text-on-surface rounded-xl font-label-md hover:bg-slate-50 active:scale-95 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined">chat</span>
+                                    Chat with Supplier
+                                </button>
+</div>
+</div>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<h3 class="font-h3 text-h3 mb-md border-b border-slate-100 pb-md">Specifications</h3>
+<dl class="grid grid-cols-2 gap-y-4">
+<dt class="text-slate-500 font-body-sm">Material</dt>
+<dd class="text-on-surface font-label-md">100% Organic Cotton</dd>
+<dt class="text-slate-500 font-body-sm">Weight</dt>
+<dd class="text-on-surface font-label-md">240 GSM (Heavyweight)</dd>
+<dt class="text-slate-500 font-body-sm">Width</dt>
+<dd class="text-on-surface font-label-md">150 cm (59 inches)</dd>
+<dt class="text-slate-500 font-body-sm">Weave Type</dt>
+<dd class="text-on-surface font-label-md">3/1 Z-Twill</dd>
+<dt class="text-slate-500 font-body-sm">Certification</dt>
+<dd class="text-on-surface font-label-md">GOTS, OEKO-TEX 100</dd>
+</dl>
+</div>
+<div class="bg-white p-lg rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)]">
+<h3 class="font-h3 text-h3 mb-md border-b border-slate-100 pb-md">Description</h3>
+<p class="text-slate-600 font-body-md leading-relaxed">
+                            Our Premium Organic Cotton Twill is ethically sourced and processed using sustainable methods. Characterized by its distinct diagonal parallel ribs, this fabric offers exceptional durability and a structured drape, making it ideal for workwear, heavy-duty trousers, jackets, and high-quality accessories.
+                        </p>
+<p class="text-slate-600 font-body-md mt-4 leading-relaxed">
+                            The fabric undergoes a specialized pre-shrunk treatment and is dyed using eco-friendly low-impact pigments that ensure long-lasting color fastness even after repeated industrial washes.
+                        </p>
+</div>
+</div>
+</div>
+<!-- Recommendations Section (Bento Style) -->
+<section class="mt-xl pt-xl border-t border-slate-200">
+<h3 class="font-h2 text-h2 mb-lg">Recommended Alternatives</h3>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md">
+<!-- Bento Item 1 -->
+<div class="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-xl bg-white shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all cursor-pointer">
+<div class="aspect-[16/9] md:aspect-auto md:h-full w-full">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="lifestyle shot of natural linen fabrics arranged in a minimalist modern aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8kicV0ysSQsMIb__ee7WpjbeljnDBc-BP9KklR-DFk3hvQTy-O7-6beAp3WHui2H0gcHyhvvLNQLr5nV1DmwQSzUCPjsYpmxrHs_1fwifv3vTvypdeV39iZ5Cw6pEHX-VvMqJ9PmqF88m4Hvx6-3nh1N84UcWCmUCXZUU2X1Lyscqi449jMPmsEj7fy7dNZLzS8ia3IfPo3Oi9Ern_F_7kU5BtnybURMu1t9ouRpr-KPtgCsdS5pnYWGie36WwJlvxQGS-DqKBPaz"/>
+</div>
+<div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-lg">
+<span class="text-primary-fixed-dim font-label-sm uppercase tracking-widest mb-1 block">Best Seller</span>
+<h4 class="text-white font-h3 text-h3">French Linen Canvas</h4>
+<p class="text-slate-200 font-body-sm">$12.00/m • MOQ 200m</p>
+</div>
+</div>
+<!-- Bento Item 2 -->
+<div class="bg-white p-md rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-md">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="swatch of recycled polyester blend fabric with a subtle tech-wear sheen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGQUfWdqkLTnS_8in4JzOWhAD7BsTlWiCF_1eOZ-3SpVFuF-vXGA9EXNBMoRVMz2tpWS6SkgjjwSSp18nXFPM6KbNsm6SZ49LzzNOcvHG3_J-XLtE12N3dN_X9Tmr731KswGfOVZzLAtXFLyEpkFuB6DGhD_liDQjAoQE4NZIRwL8YnUiy-61imSbhWha1jTHX8R7H3C8Wzr7M2rHEV6J8PC0qlGkU-kNxWGMzKjcc_VR9wND3S1nu0CkA-2EnfHlyUMlvfYBG9KjG"/>
+</div>
+<h4 class="font-label-md text-on-surface">Recycled Poly-Blend</h4>
+<p class="text-slate-500 text-xs font-body-sm">$3.80/m</p>
+</div>
+<!-- Bento Item 3 -->
+<div class="bg-white p-md rounded-xl shadow-[0_4px_12px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_20px_rgba(0,0,0,0.08)] transition-all cursor-pointer group">
+<div class="aspect-square rounded-lg overflow-hidden mb-md">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="soft white cotton jersey fabric draped elegantly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtfeFMQj2TXDSyEt7XJOj8p_L_Wa5SlJNlZzo8Bl6PQ0ZE-A2kKbCRVLwfDInNtHTBLGrVJP2jEQ24dgQTTBxtG82pyw72kV2crb9RdHUgLhJ5Dt4BlnzZUZh4d_fnZJW2aZJqZ0yzebvanhL6aQs9SMMr8jabigI1b_DkJ7zWHrz4moObGeF39ouoRMnyY-pyeL_PgPgvsERgWJFpp7A7rbSvck52dy199-iyi8SvchoD8Sp445oyAGPmH-qHz2ZvZcOE9xGJHmC1"/>
+</div>
+<h4 class="font-label-md text-on-surface">Supima Cotton Jersey</h4>
+<p class="text-slate-500 text-xs font-body-sm">$8.25/m</p>
+</div>
+<!-- Bento Item 4 -->
+<div class="md:col-span-2 bg-primary-container p-lg rounded-xl flex flex-col justify-center text-white relative overflow-hidden">
+<div class="z-10">
+<h4 class="font-h3 text-h3 mb-2">Can't find what you need?</h4>
+<p class="text-blue-100 font-body-sm mb-md max-w-xs">Submit a custom sourcing request and get quotes from verified global manufacturers within 24 hours.</p>
+<button class="bg-white text-primary px-lg py-2 rounded-full font-label-md hover:bg-blue-50 transition-colors">Post Requirement</button>
+</div>
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] opacity-10 rotate-12" data-icon="architecture">architecture</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB (Suppressed as per rules for Detail screens) -->
+<!-- We skip rendering the FAB here to prioritize the content canvas on a product detail page -->
+</body></html>

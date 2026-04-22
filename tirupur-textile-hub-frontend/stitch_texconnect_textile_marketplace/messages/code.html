@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for a cleaner B2B feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "surface-bright": "#faf8ff",
+                "on-primary-fixed-variant": "#003ea8",
+                "primary-fixed-dim": "#b4c5ff",
+                "on-secondary-container": "#693300",
+                "on-surface-variant": "#434655",
+                "on-error": "#ffffff",
+                "inverse-surface": "#2e3039",
+                "on-background": "#191b23",
+                "inverse-primary": "#b4c5ff",
+                "tertiary-container": "#bc4800",
+                "inverse-on-surface": "#f0f0fb",
+                "primary-fixed": "#dbe1ff",
+                "surface-tint": "#0053db",
+                "primary-container": "#2563eb",
+                "on-tertiary": "#ffffff",
+                "surface-dim": "#d9d9e5",
+                "surface": "#faf8ff",
+                "on-secondary-fixed-variant": "#713700",
+                "outline-variant": "#c3c6d7",
+                "on-secondary-fixed": "#301400",
+                "tertiary-fixed": "#ffdbcd",
+                "primary": "#004ac6",
+                "on-primary": "#ffffff",
+                "surface-container-highest": "#e1e2ed",
+                "on-tertiary-fixed": "#360f00",
+                "on-primary-fixed": "#00174b",
+                "surface-container-high": "#e7e7f3",
+                "outline": "#737686",
+                "secondary-fixed": "#ffdcc5",
+                "on-tertiary-container": "#ffede6",
+                "secondary": "#944a00",
+                "surface-variant": "#e1e2ed",
+                "on-error-container": "#93000a",
+                "error": "#ba1a1a",
+                "secondary-fixed-dim": "#ffb783",
+                "tertiary": "#943700",
+                "surface-container-lowest": "#ffffff",
+                "surface-container": "#ededf9",
+                "error-container": "#ffdad6",
+                "on-primary-container": "#eeefff",
+                "background": "#faf8ff",
+                "on-secondary": "#ffffff",
+                "on-surface": "#191b23",
+                "on-tertiary-fixed-variant": "#7d2d00",
+                "tertiary-fixed-dim": "#ffb596",
+                "surface-container-low": "#f3f3fe",
+                "secondary-container": "#fd933d"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "base": "4px",
+                "xl": "32px",
+                "sm": "12px",
+                "gutter": "12px",
+                "xs": "8px",
+                "md": "16px",
+                "lg": "24px",
+                "container-margin": "16px"
+              },
+              "fontFamily": {
+                "h3": ["Inter"],
+                "label-sm": ["Inter"],
+                "label-md": ["Inter"],
+                "body-sm": ["Inter"],
+                "body-md": ["Inter"],
+                "h2": ["Inter"],
+                "h1": ["Inter"],
+                "caption": ["Inter"],
+                "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "500"}],
+                "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "caption": ["12px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="bg-surface-bright text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-100 bg-white shadow-[4px_0_12px_rgba(0,0,0,0.05)] flex flex-col py-6 z-50">
+<div class="px-6 mb-8">
+<h1 class="text-xl font-black text-slate-900 tracking-tighter">TextileLink</h1>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold mt-1">B2B Marketplace</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 transition-colors duration-200 rounded-xl group" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-md text-label-md">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 transition-colors duration-200 rounded-xl group" href="#">
+<span class="material-symbols-outlined">storefront</span>
+<span class="font-label-md text-label-md">Marketplace</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 transition-colors duration-200 rounded-xl group" href="#">
+<span class="material-symbols-outlined">add_box</span>
+<span class="font-label-md text-label-md">Post Requirement</span>
+</a>
+<!-- ACTIVE TAB: Messages -->
+<a class="flex items-center gap-3 px-4 py-3 text-blue-600 font-bold border-r-4 border-blue-600 bg-blue-50/50 rounded-l-xl" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+<span class="font-label-md text-label-md">Messages</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:bg-slate-50 transition-colors duration-200 rounded-xl group" href="#">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-md text-label-md">Profile</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="p-4 bg-slate-50 rounded-2xl">
+<p class="font-label-sm text-label-sm text-slate-500 mb-2">Verified Supplier</p>
+<div class="flex items-center gap-3">
+<img alt="Profile" class="w-10 h-10 rounded-full object-cover" data-alt="professional portrait of a middle-aged asian businessman in a light blue oxford shirt with a friendly smile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsvRa3axU2X9JDTT_TPuTtSBAQogGv540pkVwspaDS0C2SXcIERNIRSegPS1Hb5hXgOgmSGOIJk4PY4K2WDEvQUJOlucN-SNpw-UL-ppj9gwa8inr8LwWh3AWQn2uKNoif9bh5zWFE-xxLAc1T3zc_4Q7-hL5TZtDUnn9QALOjhL-St8vAdgUzGinBJ3zmW4D05fMi2EPoeEqf89qILrG2OzKjcgpd7Xjf8CBv30KcE8kODtxDsrnIKspgxIzqHW8cfG-x0X1iPp5p"/>
+<div class="overflow-hidden">
+<p class="font-label-md text-label-md text-on-surface truncate">Global Silks Ltd.</p>
+<p class="text-[10px] text-blue-600 font-bold tracking-tight">PREMIUM PLAN</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Top AppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 border-b border-slate-100 bg-white/80 backdrop-blur-md z-40 flex items-center justify-between px-8">
+<div class="flex items-center bg-slate-100 rounded-full px-4 py-1.5 w-96">
+<span class="material-symbols-outlined text-slate-400 text-lg">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-slate-400" placeholder="Search conversations..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="hover:bg-slate-50 rounded-full p-2 transition-all relative">
+<span class="material-symbols-outlined text-slate-600">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="hover:bg-slate-50 rounded-full p-2 transition-all">
+<span class="material-symbols-outlined text-slate-600">settings</span>
+</button>
+<div class="h-8 w-[1px] bg-slate-200 mx-2"></div>
+<img alt="User Profile" class="w-8 h-8 rounded-full bg-slate-200 object-cover" data-alt="close-up of a high-end luxury business logo featuring elegant serif typography and minimalist lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0-oiHGUCngDVibTdUY5LZUNbNcTpJ6EeSZ5vOA7ov7mtdZEdjP6b4henaU6jD5OviukpGGShJ3Q_YgsCs0OYImeizQ8NTPXHHNaYxs9_TFgLRk7XB5UMfwiLRzxWx-uE68hya79rY44vru4m6yrgPY2HYP-1L-p2A9kJZVg3t33106zUSuml2HTvjb_W_r1lsEOtdrU4VYO41lNleVmg8OHzX6ktWtqHTeEevYKC8snsCSNzPcCopCRAmUKHt2JQzyVgMbwjVmhw_"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 h-screen flex overflow-hidden">
+<!-- Conversation List (Left Column) -->
+<section class="w-[400px] border-r border-slate-100 flex flex-col bg-white overflow-y-auto">
+<div class="p-6 flex items-center justify-between">
+<h2 class="font-h2 text-h2 text-on-surface">Inbox</h2>
+<button class="p-2 bg-blue-50 text-blue-600 rounded-xl hover:scale-95 transition-transform">
+<span class="material-symbols-outlined">edit_square</span>
+</button>
+</div>
+<div class="px-4 pb-6 space-y-1">
+<!-- Active Chat -->
+<div class="flex items-center gap-4 p-4 bg-blue-50/50 rounded-2xl cursor-pointer border border-blue-100/50">
+<div class="relative">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="close-up view of a professional woman with glasses in a modern office setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB70ZNbofntQwbBoLjTvLxNa1up_2-ecLXjKqAMoOQ5LeguNxQF8LdF6W8NsKZYi3IudgSszuq-CVCAwERS2DxuISneqHZ_NSy8oveZmTWRpLPJJhcLgl4MZ6-6X8BLVzkRYyIIuKdG4dSjersErp8Pfd5bOMLXwI1dKr82n8jIJVvFRlPDr3FK7t_RRhIDyq3xTy1aLZGGkuuNOyuWw86BiMYgKyRvNIysrAiItPh_mzpre4hs-RIIperV_K5-USj6eo5y63SsXDGO"/>
+<span class="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 border-2 border-white rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Cotton Craft Int.</h3>
+<span class="text-[11px] text-slate-400 font-medium">10:42 AM</span>
+</div>
+<p class="text-body-sm font-body-sm text-blue-600 font-semibold truncate">Yes, the 400TC samples are ready.</p>
+</div>
+</div>
+<!-- Chat Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl cursor-pointer transition-colors group">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="vibrant photo of high-quality rolls of dyed linen fabric in a variety of pastel colors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdEp7YCfXIL__1DxuRs9csdoEumOczHNMbzp7O5VBbOiD-QlxfkwDm251dkdxOjZlb9iQxGTGTld2bl_7a_eBBtf6GWiYCDn0-nPHu6X3XPdx0x41BOCTeusgPL_8bDtFiB3DTMv5-wv1RBx6NWip5isRuguWeRauBA6ATG54ndAloY6-zwtTN10uJp2hNUt615d1R5izsiVGCiDNIS7r6a01w70WY_QRnnqG8_Uieh0jE_NKImo78Q9hHp2BR3dHMMGtJPEL277v5"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Linen Wonders</h3>
+<span class="text-[11px] text-slate-400 font-medium">Yesterday</span>
+</div>
+<p class="text-body-sm font-body-sm text-slate-500 truncate">Looking forward to the quotation.</p>
+</div>
+</div>
+<!-- Chat Item -->
+<div class="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl cursor-pointer transition-colors group">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="modern minimalist textile factory background with soft industrial lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyCkZBZSi8rLeArz1rvbIg5nh6brlo51xvnjTH4O20vPjHQqw1oHOpl-aRlAYnXklDTZt5Uwpkt4ezqbfDsYOGQCGL5qDnUBltvvq64c3w2Oh2srW1-sDp300YR2hHDCzssp6t2E8qnEKABapIoU7_QYwvTT4UdxVWoZ6WfrQZbdd4pcwH5kxhmd6Ui62_T50T9a4O4iTV2lgxUQOM-25az90ue2y8phiBEBveAUXHHiSp5zTmp9BYbUEG-BInMxdT6PAhxNTeMoHO"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Silk Route Sourcing</h3>
+<span class="text-[11px] text-slate-400 font-medium">Mon</span>
+</div>
+<p class="text-body-sm font-body-sm text-slate-500 truncate">The shipping delay was cleared today.</p>
+</div>
+<div class="w-5 h-5 bg-blue-600 rounded-full flex items-center justify-center">
+<span class="text-[10px] text-white font-bold">2</span>
+</div>
+</div>
+<!-- More Chat Items... -->
+<div class="flex items-center gap-4 p-4 hover:bg-slate-50 rounded-2xl cursor-pointer transition-colors group">
+<img alt="Avatar" class="w-12 h-12 rounded-2xl object-cover" data-alt="macro shot of organic cotton fibers with a soft, clean white texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKvJlTUea66owfecn_eAGrT5K1DbtVh4pawV1XalW0oav6mTrSPb0sK2P1SIsPjfwuwQ3CgNNWWk27iJwWxkiUKxcIAlHLk3yCkDOALOBORJ5U-tqtiNo_pwMKwlI6GhoikJdI-MRmYxAUrvvjH4fx-fauLAB5eDWs-C7Su9hj3B1QLCl2fh5g144mR3MjZVHu3D30ItCf5eNppLJ0cFlkuCQZfxYukvBFFF84dnopwIrKKmGyEVh9DT8A9hcVBWdo_clMqbOMykAN"/>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start mb-0.5">
+<h3 class="font-label-md text-label-md text-on-surface truncate">Organic Weaves</h3>
+<span class="text-[11px] text-slate-400 font-medium">Oct 12</span>
+</div>
+<p class="text-body-sm font-body-sm text-slate-500 truncate">We sent the GOTS certificates.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Active Chat Window (Right Column) -->
+<section class="flex-1 flex flex-col bg-surface-low relative">
+<!-- Chat Header -->
+<div class="h-20 px-8 flex items-center justify-between bg-white border-b border-slate-100 shrink-0">
+<div class="flex items-center gap-4">
+<img alt="Current Chat" class="w-10 h-10 rounded-xl object-cover" data-alt="professional woman in business attire" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBIh3Zuaqs8ywJAINRhirPTtft40ULzyK-VVGgvUgp3DM78jSPQnBysNHIvHhDinyXi9b84KQbobbbNCsUtHA-xGMo2rNfKkxnUHm5GSyFLZG-PqGrwNP8WEkX8RGMX62Po_WoSoR8qTFgo7mvna7pcA9HGDIRy5Edw7iDUAaPJGBSEdBMhVQKe03QBvyRxHA1zks1NV-HbbXVktDZ2SBXWgIOQMgY12CbYD7utcZ-Mt0fnggEwvx6j8SzOVWruVogiGhTSVIi_LOP9"/>
+<div>
+<h2 class="font-label-md text-label-md text-on-surface">Cotton Craft Int.</h2>
+<div class="flex items-center gap-1.5">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+<span class="text-[11px] text-slate-500 font-medium">Active now</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2.5 hover:bg-slate-50 rounded-xl text-slate-600 transition-all">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="p-2.5 hover:bg-slate-50 rounded-xl text-slate-600 transition-all">
+<span class="material-symbols-outlined">videocam</span>
+</button>
+<button class="p-2.5 hover:bg-slate-50 rounded-xl text-slate-600 transition-all">
+<span class="material-symbols-outlined">info</span>
+</button>
+</div>
+</div>
+<!-- Messages Area -->
+<div class="flex-1 overflow-y-auto p-8 space-y-6">
+<!-- Date Separator -->
+<div class="flex justify-center">
+<span class="bg-slate-100 text-slate-500 text-[11px] font-bold px-3 py-1 rounded-full uppercase tracking-wider">Today</span>
+</div>
+<!-- Message Received -->
+<div class="flex items-end gap-3 max-w-[70%]">
+<img alt="User" class="w-8 h-8 rounded-lg mb-1" data-alt="professional woman portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwQI-kwmG2m_TLEncmj21Mu-JbmRXZ7Cqs4DU1cD7bZzwOvuAJmyZAgmdJmXX0OzbVvfSl3p6O_AedyZ655kw7Gl09zsAUba4J2RijPIOMaTHeg1UDUT6QjcPrvcFqryWAo3-Jpb3zUyG2CMqWtPExFzP-sGjAQ_2F6Cj8TOOjHRoy_bjNTIXiW-88KlLrsI2p7JH43n5FYRCHkf7uUKCSDj-YRoJDdQXMys3KikE5NJbilEZqNNofyfjTo2homRzxBh3klXdE7t69"/>
+<div>
+<div class="bg-white p-4 rounded-2xl rounded-bl-none shadow-[4px_4px_12px_rgba(0,0,0,0.02)] border border-slate-100">
+<p class="text-body-md font-body-md text-on-surface">Hello, we've reviewed your request for the 400TC Egyptian Cotton. The pricing you requested is feasible for a 5000-meter order.</p>
+</div>
+<span class="text-[10px] text-slate-400 mt-1 ml-1">10:30 AM</span>
+</div>
+</div>
+<!-- Message Sent -->
+<div class="flex items-end gap-3 justify-end ml-auto max-w-[70%]">
+<div class="flex flex-col items-end">
+<div class="bg-primary-container p-4 rounded-2xl rounded-br-none shadow-[0_4px_12px_rgba(37,99,235,0.15)] text-on-primary-container">
+<p class="text-body-md font-body-md">That's great news. Can you confirm the lead time for the first batch? We need at least 1000 meters by next Friday.</p>
+</div>
+<div class="flex items-center gap-1 mt-1 mr-1">
+<span class="text-[10px] text-slate-400">10:35 AM</span>
+<span class="material-symbols-outlined text-[12px] text-blue-600" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+</div>
+<!-- Message Received with Image Attachment -->
+<div class="flex items-end gap-3 max-w-[70%]">
+<img alt="User" class="w-8 h-8 rounded-lg mb-1" data-alt="professional woman portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4JZnhVdBFsLLexMLz-Bnnmr65LDkdXTwVQg3XfgVHZfT9bJpPgwRGs81X1LabAjxQHwsRpyDjbwM2IxqmJn14ftIWsPwQ-2cn1jruoZPsQ6XRt2YXd9VgDBvXeo5yYPMg5K18Nf2tJ4lDKo207tN_CME9F9PgHjhyuJFZ7fhcXng9zDozIspQ7uuQ9qYwhA9qni2ttsEiXief0EtqVc-6Mujom_HcrbQiS6u8Q_ztGUUhEW4xlrYr0asQOuQs2-Ofe_ecMRa_CaVY"/>
+<div>
+<div class="bg-white p-4 rounded-2xl rounded-bl-none shadow-[4px_4px_12px_rgba(0,0,0,0.02)] border border-slate-100 space-y-3">
+<p class="text-body-md font-body-md text-on-surface">Yes, the 400TC samples are ready. I've attached a photo of the weave density for your reference.</p>
+<div class="relative group cursor-pointer overflow-hidden rounded-xl">
+<img alt="Fabric Sample" class="w-full h-48 object-cover" data-alt="extreme close-up of high thread count white cotton fabric showing intricate weave pattern and soft texture" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCp3md2ebemHp0hWL_RofGMZV0xcOJGl56QyaknQg7oAIEi2av1mz_EAEU8R1fhkm5pHPW0LKtg7V4Pyfy61s2PFPD_rJFs76L6k0mNLvmGhGGcCO_hN5_OIQ90HmyzTWBLOLzTbFuCJ0tBqzkSFgfPPdAYNEU-iao7SJb0syR_t8nBhV9erHWChcnKfztGZ1v3nFlh5ua139VjWEpB00Ch314RVjXONFvfEjItSfa249zH7NKin4C2zxA70tx24L1Dp_VcPmB0nqb_"/>
+<div class="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+<span class="material-symbols-outlined text-white text-3xl">zoom_in</span>
+</div>
+</div>
+</div>
+<span class="text-[10px] text-slate-400 mt-1 ml-1">10:42 AM</span>
+</div>
+</div>
+</div>
+<!-- Message Input Area -->
+<div class="p-6 bg-white border-t border-slate-100">
+<div class="flex items-end gap-4 max-w-5xl mx-auto">
+<div class="flex items-center gap-1 mb-1">
+<button class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<button class="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">image</span>
+</button>
+</div>
+<div class="flex-1 bg-slate-50 border border-slate-100 rounded-2xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all flex items-center px-4 py-1">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-sm py-3 resize-none max-h-32 placeholder:text-slate-400" placeholder="Type a message..." rows="1"></textarea>
+<button class="p-2 text-slate-400 hover:text-blue-600 transition-colors">
+<span class="material-symbols-outlined">mood</span>
+</button>
+</div>
+<button class="mb-1 w-12 h-12 bg-blue-600 text-white rounded-2xl flex items-center justify-center shadow-lg shadow-blue-500/30 hover:bg-blue-700 hover:scale-95 active:scale-90 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">send</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+</body></html>
