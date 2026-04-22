@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
-import axios from '../api/axios';
-import { Send, Search, User, Paperclip } from 'lucide-react';
-import Button from '../components/common/Button';
 
 const MessagesPage = () => {
   const { user } = useAuthStore();
@@ -10,129 +7,151 @@ const MessagesPage = () => {
   const [selectedConv, setSelectedConv] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Mock conversations
     setConversations([
-      { _id: '1', participants: [{ name: 'Oceanic Textiles' }], lastMessage: 'We can deliver in 15 days.', lastMessageAt: new Date() },
-      { _id: '2', participants: [{ name: 'Royal Knits' }], lastMessage: 'Sample sent today.', lastMessageAt: new Date() },
+      { _id: '1', name: 'Cotton Craft Int.', lastMsg: 'Yes, the 400TC samples are ready.', time: '10:42 AM', unread: 0, online: true, img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100' },
+      { _id: '2', name: 'Linen Wonders', lastMsg: 'Looking forward to the quotation.', time: 'Yesterday', unread: 0, online: false, img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100' },
+      { _id: '3', name: 'Silk Route Sourcing', lastMsg: 'The shipping delay was cleared today.', time: 'Mon', unread: 2, online: true, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100' },
     ]);
   }, []);
 
   const selectConversation = (conv) => {
     setSelectedConv(conv);
-    // Mock messages
     setMessages([
-      { _id: 'm1', senderId: 'other', content: 'Hello, regarding your RFQ for Cotton T-shirts.', createdAt: new Date() },
-      { _id: 'm2', senderId: user?.id, content: 'Hi, what is your best price for 1000 units?', createdAt: new Date() },
-      { _id: 'm3', senderId: 'other', content: 'We can do it for ₹140 per unit.', createdAt: new Date() },
+      { _id: 'm1', senderId: 'other', content: "Hello, we've reviewed your request for the 400TC Egyptian Cotton. The pricing you requested is feasible for a 5000-meter order.", time: '10:30 AM' },
+      { _id: 'm2', senderId: user?.id, content: "That's great news. Can you confirm the lead time for the first batch? We need at least 1000 meters by next Friday.", time: '10:35 AM' },
+      { _id: 'm3', senderId: 'other', content: "Yes, the 400TC samples are ready. I'll send the tracking number shortly.", time: '10:42 AM' },
     ]);
   };
 
-  const handleSendMessage = (e) => {
+  const handleSend = (e) => {
     e.preventDefault();
     if (!newMessage.trim()) return;
-
-    const msg = {
-      _id: Date.now().toString(),
-      senderId: user?.id,
-      content: newMessage,
-      createdAt: new Date()
-    };
-    setMessages([...messages, msg]);
+    setMessages([...messages, { _id: Date.now().toString(), senderId: user?.id, content: newMessage, time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) }]);
     setNewMessage('');
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 h-[calc(100vh-120px)]">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 h-full flex overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-full md:w-80 border-r border-gray-200 flex flex-col">
-          <div className="p-4 border-b border-gray-200">
-            <h2 className="text-xl font-bold text-gray-900 mb-4">Messages</h2>
-            <div className="relative">
-              <input 
-                type="text" 
-                placeholder="Search chats..." 
-                className="w-full pl-9 pr-3 py-2 text-sm border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-              />
-              <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-            </div>
-          </div>
-          <div className="flex-grow overflow-y-auto">
-            {conversations.map(conv => (
-              <div 
-                key={conv._id}
-                onClick={() => selectConversation(conv)}
-                className={`p-4 border-b border-gray-50 cursor-pointer hover:bg-gray-50 transition-colors ${selectedConv?._id === conv._id ? 'bg-primary-50' : ''}`}
-              >
-                <div className="flex justify-between items-start">
-                  <h3 className="font-bold text-gray-900">{conv.participants[0].name}</h3>
-                  <span className="text-[10px] text-gray-400">{new Date(conv.lastMessageAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
-                </div>
-                <p className="text-sm text-gray-500 truncate mt-1">{conv.lastMessage}</p>
-              </div>
-            ))}
-          </div>
+    <div className="h-[calc(100vh-120px)] flex bg-white rounded-3xl shadow-soft border border-slate-50 overflow-hidden">
+      {/* Sidebar */}
+      <section className="w-[380px] border-r border-slate-50 flex flex-col">
+        <div className="p-6 flex items-center justify-between border-b border-slate-50">
+          <h2 className="text-xl font-black text-slate-900">Inbox</h2>
+          <button className="w-10 h-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center hover:scale-95 transition-transform">
+            <span className="material-symbols-outlined">edit_square</span>
+          </button>
         </div>
+        
+        <div className="flex-1 overflow-y-auto px-3 py-4 space-y-1">
+          {conversations.map(conv => (
+            <div 
+              key={conv._id}
+              onClick={() => selectConversation(conv)}
+              className={`flex items-center gap-4 p-4 rounded-2xl cursor-pointer transition-all ${
+                selectedConv?._id === conv._id ? 'bg-primary/5 border border-primary/10' : 'hover:bg-slate-50 border border-transparent'
+              }`}
+            >
+              <div className="relative flex-shrink-0">
+                <img src={conv.img} className="w-12 h-12 rounded-xl object-cover" alt={conv.name} />
+                {conv.online && <span className="absolute -bottom-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-white rounded-full"></span>}
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-start mb-0.5">
+                  <h3 className={`text-sm font-bold truncate ${selectedConv?._id === conv._id ? 'text-primary' : 'text-slate-900'}`}>{conv.name}</h3>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase">{conv.time}</span>
+                </div>
+                <p className={`text-xs truncate ${conv.unread > 0 ? 'text-slate-900 font-bold' : 'text-slate-500 font-medium'}`}>{conv.lastMsg}</p>
+              </div>
+              {conv.unread > 0 && (
+                <div className="w-5 h-5 bg-primary rounded-full flex items-center justify-center">
+                  <span className="text-[10px] text-white font-black">{conv.unread}</span>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
 
-        {/* Chat Area */}
-        <div className="hidden md:flex flex-grow flex-col">
-          {selectedConv ? (
-            <>
-              <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <div className="h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600">
-                    <User className="h-6 w-6" />
+      {/* Chat Area */}
+      <section className="flex-1 flex flex-col bg-slate-50/30">
+        {selectedConv ? (
+          <>
+            {/* Chat Header */}
+            <div className="h-20 px-8 flex items-center justify-between bg-white border-b border-slate-50 shrink-0">
+              <div className="flex items-center gap-4">
+                <img src={selectedConv.img} className="w-10 h-10 rounded-xl object-cover" alt={selectedConv.name} />
+                <div>
+                  <h2 className="text-sm font-black text-slate-900">{selectedConv.name}</h2>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-1.5 h-1.5 rounded-full ${selectedConv.online ? 'bg-green-500' : 'bg-slate-300'}`}></span>
+                    <span className="text-[10px] text-slate-400 font-bold uppercase tracking-tight">{selectedConv.online ? 'Active Now' : 'Offline'}</span>
                   </div>
-                  <h3 className="font-bold text-gray-900">{selectedConv.participants[0].name}</h3>
                 </div>
               </div>
-              
-              <div className="flex-grow overflow-y-auto p-6 space-y-4">
-                {messages.map((msg) => (
-                  <div key={msg._id} className={`flex ${msg.senderId === user?.id ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[70%] p-3 rounded-2xl ${
-                      msg.senderId === user?.id 
-                        ? 'bg-primary-600 text-white rounded-tr-none' 
-                        : 'bg-gray-100 text-gray-800 rounded-tl-none'
-                    }`}>
-                      <p className="text-sm">{msg.content}</p>
-                      <p className={`text-[10px] mt-1 ${msg.senderId === user?.id ? 'text-primary-100' : 'text-gray-400'}`}>
-                        {new Date(msg.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </p>
-                    </div>
-                  </div>
-                ))}
+              <div className="flex items-center gap-2">
+                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">call</span></button>
+                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">videocam</span></button>
+                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">info</span></button>
               </div>
+            </div>
 
-              <div className="p-4 border-t border-gray-200">
-                <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
-                  <button type="button" className="p-2 text-gray-400 hover:text-gray-600">
-                    <Paperclip className="h-5 w-5" />
-                  </button>
-                  <input 
-                    type="text" 
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-8 space-y-6">
+              {messages.map((msg) => (
+                <div key={msg._id} className={`flex ${msg.senderId === user?.id ? 'justify-end' : 'justify-start'}`}>
+                  <div className={`max-w-[70%] group`}>
+                    <div className={`p-4 rounded-2xl shadow-sm text-sm font-medium ${
+                      msg.senderId === user?.id 
+                        ? 'bg-primary text-white rounded-br-none' 
+                        : 'bg-white text-slate-700 border border-slate-50 rounded-bl-none'
+                    }`}>
+                      {msg.content}
+                    </div>
+                    <p className={`text-[10px] font-bold uppercase mt-1.5 px-1 tracking-widest ${msg.senderId === user?.id ? 'text-right text-slate-400' : 'text-slate-300'}`}>
+                      {msg.time}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Input */}
+            <div className="p-6 bg-white border-t border-slate-50">
+              <form onSubmit={handleSend} className="flex items-end gap-4 max-w-5xl mx-auto">
+                <div className="flex gap-1 mb-1">
+                  <button type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">add_circle</span></button>
+                  <button type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">image</span></button>
+                </div>
+                <div className="flex-1 bg-slate-50 rounded-2xl flex items-center px-4">
+                  <textarea 
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
+                    className="w-full bg-transparent border-none focus:ring-0 text-sm py-3 resize-none max-h-32 placeholder:text-slate-300 font-medium" 
                     placeholder="Type a message..." 
-                    className="flex-grow border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                  />
-                  <Button type="submit" className="rounded-full p-2 h-10 w-10 flex items-center justify-center">
-                    <Send className="h-5 w-5" />
-                  </Button>
-                </form>
-              </div>
-            </>
-          ) : (
-            <div className="flex-grow flex flex-col items-center justify-center text-gray-400">
-              <MessageSquare className="h-16 w-16 mb-4 opacity-20" />
-              <p>Select a conversation to start messaging</p>
+                    rows="1"
+                    onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(e); } }}
+                  ></textarea>
+                </div>
+                <button 
+                  type="submit"
+                  className="mb-1 w-12 h-12 bg-primary text-white rounded-2xl flex items-center justify-center shadow-lg shadow-primary/20 hover:scale-95 active:scale-90 transition-all"
+                >
+                  <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>send</span>
+                </button>
+              </form>
             </div>
-          )}
-        </div>
-      </div>
+          </>
+        ) : (
+          <div className="flex-1 flex flex-col items-center justify-center text-slate-300 bg-slate-50/30">
+            <div className="w-20 h-20 bg-white rounded-3xl shadow-soft flex items-center justify-center mb-6">
+              <span className="material-symbols-outlined text-4xl text-slate-200">chat_bubble</span>
+            </div>
+            <p className="font-bold text-sm uppercase tracking-widest">Select a conversation to start</p>
+          </div>
+        )}
+      </section>
     </div>
   );
 };
