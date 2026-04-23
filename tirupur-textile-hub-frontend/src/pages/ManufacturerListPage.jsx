@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 import FactoryCard from '../components/manufacturer/FactoryCard';
-import Input from '../components/common/Input';
-import { Search } from 'lucide-react';
 
 const ManufacturerListPage = () => {
   const [manufacturers, setManufacturers] = useState([]);
@@ -16,13 +14,8 @@ const ManufacturerListPage = () => {
       setManufacturers(response.data.data.manufacturers);
     } catch (error) {
       console.error('Error fetching manufacturers:', error);
-      // Mock data
-      setManufacturers([
-        { _id: '1', companyName: 'Oceanic Textiles', isVerified: true, verificationBadge: 'premium', rating: 4.8 },
-        { _id: '2', companyName: 'Royal Knits', isVerified: true, verificationBadge: 'none', rating: 4.5 },
-        { _id: '3', companyName: 'Sun Garments', isVerified: false, verificationBadge: 'none', rating: 4.2 },
-        { _id: '4', companyName: 'PureCotton Pvt Ltd.', isVerified: true, verificationBadge: 'premium', rating: 4.9 },
-      ]);
+      // No mock manufacturers as requested
+      setManufacturers([]);
     } finally {
       setIsLoading(false);
     }
@@ -33,27 +26,29 @@ const ManufacturerListPage = () => {
   }, []);
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+    <div className="space-y-10">
+      <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-extrabold text-gray-900">Verified Manufacturers</h1>
-          <p className="mt-2 text-gray-600">Connect with the industry leaders direct from Tirupur.</p>
+          <h1 className="text-3xl font-black text-slate-900 tracking-tight">Verified Manufacturers</h1>
+          <p className="text-slate-500 text-lg mt-1 font-medium">Direct sourcing from India's premium knitwear factories.</p>
         </div>
         
-        <div className="mt-4 md:mt-0 relative">
-          <Input 
-            placeholder="Search manufacturers..." 
+        <div className="w-full md:w-96 relative group">
+          <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">search</span>
+          <input 
+            className="w-full bg-white border border-slate-200 rounded-2xl py-4 pl-12 pr-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium shadow-soft" 
+            placeholder="Search factories by name or category..." 
             value={search} 
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full md:w-80"
           />
-          <Search className="absolute right-3 top-2.5 h-4 w-4 text-gray-400" />
         </div>
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center items-center h-64">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[1, 2, 3].map(i => (
+            <div key={i} className="h-80 bg-slate-100 animate-pulse rounded-3xl"></div>
+          ))}
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">

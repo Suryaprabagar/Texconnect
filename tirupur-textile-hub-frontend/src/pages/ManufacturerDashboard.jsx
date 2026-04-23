@@ -1,91 +1,127 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import Button from '../components/common/Button';
-import { Plus, Package, FileText, IndianRupee, TrendingUp } from 'lucide-react';
+import { useToastStore } from '../store/toastStore';
 
 const ManufacturerDashboard = () => {
   const { user } = useAuthStore();
+  const addToast = useToastStore((state) => state.addToast);
   const [stats, setStats] = useState({ products: 0, rfqs: 0, revenue: 0 });
 
-  useEffect(() => {
-    // Mock stats
-    setStats({ products: 24, rfqs: 15, revenue: 450000 });
-  }, []);
-
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <div className="flex justify-between items-center mb-10">
+    <div className="space-y-10">
+      {/* Header */}
+      <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Manufacturer Panel: {user?.name}</h1>
-          <p className="text-gray-600">Manage your products, quotes and incoming RFQs.</p>
+          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Manufacturer Panel</h2>
+          <p className="text-slate-500 text-lg mt-1 font-medium">Managing: <span className="text-primary">{user?.name || 'Your Factory'}</span></p>
         </div>
-        <div className="flex space-x-4">
-          <Link to="/products/manage">
-            <Button variant="outline">Manage Products</Button>
+        <div className="flex items-center gap-3">
+          <Link 
+            to="/dashboard/manufacturer" 
+            onClick={() => addToast('Inventory management coming soon!', 'info')}
+            className="h-12 px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center shadow-sm text-sm"
+          >
+            <span className="material-symbols-outlined mr-2">inventory_2</span>
+            Manage Inventory
           </Link>
-          <Link to="/products/add">
-            <Button className="flex items-center">
-              <Plus className="h-5 w-5 mr-2" />
-              Add New Product
-            </Button>
+          <Link to="/products/add" className="h-12 px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center transform active:scale-95 text-sm">
+            <span className="material-symbols-outlined mr-2">add_circle</span>
+            Add New Product
           </Link>
         </div>
-      </div>
+      </section>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-          <div className="bg-orange-100 p-3 rounded-lg text-orange-600">
-            <Package className="h-6 w-6" />
+      {/* Stats Grid */}
+      <section className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="bg-white p-6 rounded-2xl shadow-soft border-l-4 border-primary group hover:translate-y-[-4px] transition-transform duration-300">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-primary/10 rounded-xl">
+              <span className="material-symbols-outlined text-primary">package_2</span>
+            </div>
           </div>
-          <div>
-            <p className="text-sm text-gray-500 font-medium">Total Products</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.products}</p>
-          </div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-          <div className="bg-blue-100 p-3 rounded-lg text-blue-600">
-            <FileText className="h-6 w-6" />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-medium">Incoming RFQs</p>
-            <p className="text-2xl font-bold text-gray-900">{stats.rfqs}</p>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Live Products</p>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-4xl font-black text-slate-900">{stats.products}</h3>
+            <span className="text-xs text-slate-400 font-medium">Items online</span>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-100 flex items-center space-x-4">
-          <div className="bg-green-100 p-3 rounded-lg text-green-600">
-            <IndianRupee className="h-6 w-6" />
+
+        <div className="bg-white p-6 rounded-2xl shadow-soft border-l-4 border-orange-400 group hover:translate-y-[-4px] transition-transform duration-300">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-orange-50 rounded-xl">
+              <span className="material-symbols-outlined text-orange-600">file_copy</span>
+            </div>
+            <span className="w-2 h-2 bg-error rounded-full animate-pulse"></span>
           </div>
-          <div>
-            <p className="text-sm text-gray-500 font-medium">Total Revenue</p>
-            <p className="text-2xl font-bold text-gray-900">₹{stats.revenue.toLocaleString()}</p>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Open RFQs</p>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-4xl font-black text-slate-900">{stats.rfqs}</h3>
+            <span className="text-xs text-slate-400 font-medium">Bids required</span>
           </div>
         </div>
-      </div>
+
+        <div className="bg-white p-6 rounded-2xl shadow-soft border-l-4 border-emerald-400 group hover:translate-y-[-4px] transition-transform duration-300">
+          <div className="flex justify-between items-start mb-4">
+            <div className="p-3 bg-emerald-50 rounded-xl">
+              <span className="material-symbols-outlined text-emerald-600">payments</span>
+            </div>
+          </div>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Total Revenue</p>
+          <div className="flex items-baseline gap-2">
+            <h3 className="text-4xl font-black text-slate-900">₹4.5L</h3>
+            <span className="text-xs text-slate-400 font-medium">This month</span>
+          </div>
+        </div>
+      </section>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4 flex items-center">
-            <TrendingUp className="h-5 w-5 mr-2 text-primary-600" />
+        {/* Performance */}
+        <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
+          <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center">
+            <span className="material-symbols-outlined mr-2 text-primary">trending_up</span>
             Performance Overview
-          </h2>
-          <div className="h-48 bg-gray-50 rounded-lg flex items-center justify-center text-gray-400 italic">
-            Chart Placeholder: Sales over time
+          </h3>
+          <div className="aspect-video bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center">
+            <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Analytics Dashboard Coming Soon</p>
           </div>
-        </div>
-        <div className="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Quick Actions</h2>
-          <div className="space-y-3">
-            <Link to="/rfqs/incoming" className="block p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
-              <p className="font-bold text-gray-900">Review Open RFQs</p>
-              <p className="text-sm text-gray-500">View buyers looking for products in your category.</p>
+        </section>
+
+        {/* Quick Actions */}
+        <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
+          <h3 className="text-xl font-black text-slate-900 mb-6">Quick Actions</h3>
+          <div className="space-y-4">
+            <Link 
+              to="/dashboard/manufacturer" 
+              onClick={() => addToast('Marketplace exploration coming soon!', 'info')}
+              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
+            >
+              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-blue-600">search</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-slate-900 font-bold text-sm">Review Open RFQs</p>
+                <p className="text-xs text-slate-500 mt-1">Find buyers looking for your products.</p>
+              </div>
+              <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
             </Link>
-            <Link to="/orders/manage" className="block p-3 rounded-lg border border-gray-100 hover:bg-gray-50 transition-colors">
-              <p className="font-bold text-gray-900">Manage Orders</p>
-              <p className="text-sm text-gray-500">Update shipping status and timeline for active orders.</p>
+            
+            <Link 
+              to="/dashboard/manufacturer" 
+              onClick={() => addToast('Order management system coming soon!', 'info')}
+              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
+            >
+              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                <span className="material-symbols-outlined text-emerald-600">local_shipping</span>
+              </div>
+              <div className="flex-1">
+                <p className="text-slate-900 font-bold text-sm">Manage Orders</p>
+                <p className="text-xs text-slate-500 mt-1">Update shipping and order timelines.</p>
+              </div>
+              <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
             </Link>
           </div>
-        </div>
+        </section>
       </div>
     </div>
   );

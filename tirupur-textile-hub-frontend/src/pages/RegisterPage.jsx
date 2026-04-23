@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useAuthStore } from '../store/authStore';
-import Button from '../components/common/Button';
-import Input from '../components/common/Input';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -29,6 +27,7 @@ const RegisterPage = () => {
       
       setAuth(user, accessToken, refreshToken);
       localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
       
       navigate('/dashboard');
     } catch (err) {
@@ -39,76 +38,128 @@ const RegisterPage = () => {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const setRole = (role) => {
+    setFormData({ ...formData, role });
   };
 
   return (
-    <div className="min-h-full flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">Create your account</h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Already have an account?{' '}
-          <Link to="/login" className="font-medium text-primary-600 hover:text-primary-500">
-            Sign in
-          </Link>
-        </p>
+    <div className="min-h-[90vh] flex flex-col items-center justify-center p-4">
+      <div className="mb-8 text-center">
+        <h1 className="text-2xl font-black text-slate-900 tracking-tighter">Texconnect</h1>
+        <p className="text-sm text-slate-500 mt-1">Join thousands of industry professionals</p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={handleSubmit}>
-            {error && (
-              <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-md text-sm">
-                {error}
-              </div>
-            )}
-            
-            <Input
-              id="name"
-              label="Full Name"
-              type="text"
-              required
-              value={formData.name}
-              onChange={handleChange}
-            />
+      <div className="bg-white p-8 rounded-2xl shadow-soft w-full max-w-[460px] border border-slate-50">
+        <h2 className="text-xl font-bold text-on-surface mb-6">Create Account</h2>
+        
+        {error && (
+          <div className="mb-4 p-3 bg-red-50 text-red-600 text-xs font-bold rounded-xl border border-red-100">
+            {error}
+          </div>
+        )}
 
-            <Input
-              id="email"
-              label="Email address"
-              type="email"
-              required
-              value={formData.email}
-              onChange={handleChange}
-            />
-
-            <Input
-              id="password"
-              label="Password"
-              type="password"
-              required
-              value={formData.password}
-              onChange={handleChange}
-            />
-
-            <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700">
-                I am a...
-              </label>
-              <select
-                id="role"
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
-                value={formData.role}
-                onChange={handleChange}
+        <form onSubmit={handleSubmit} className="space-y-6">
+          {/* Role Selection */}
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">I am a...</label>
+            <div className="grid grid-cols-2 gap-4">
+              <button
+                type="button"
+                onClick={() => setRole('buyer')}
+                className={`p-4 text-center border rounded-xl transition-all ${
+                  formData.role === 'buyer'
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-slate-200 hover:bg-slate-50 text-slate-500'
+                }`}
               >
-                <option value="buyer">Buyer / Retailer</option>
-                <option value="manufacturer">Garment Manufacturer</option>
-              </select>
+                <span className="material-symbols-outlined block mb-1">shopping_cart</span>
+                <span className="text-xs font-bold">Buyer</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setRole('manufacturer')}
+                className={`p-4 text-center border rounded-xl transition-all ${
+                  formData.role === 'manufacturer'
+                    ? 'border-primary bg-primary/5 text-primary'
+                    : 'border-slate-200 hover:bg-slate-50 text-slate-500'
+                }`}
+              >
+                <span className="material-symbols-outlined block mb-1">factory</span>
+                <span className="text-xs font-bold">Manufacturer</span>
+              </button>
             </div>
+          </div>
 
-            <Button type="submit" className="w-full" isLoading={isLoading}>
-              Register
-            </Button>
-          </form>
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Full Name</label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">person</span>
+              <input 
+                name="name"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm" 
+                placeholder="First and last name" 
+                type="text"
+                value={formData.name}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Email Address</label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">mail</span>
+              <input 
+                name="email"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm" 
+                placeholder="name@company.com" 
+                type="email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-bold text-slate-700 uppercase tracking-wider block">Set Password</label>
+            <div className="relative">
+              <span className="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">vpn_key</span>
+              <input 
+                name="password"
+                className="w-full pl-12 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary transition-all text-sm" 
+                placeholder="Min. 8 characters" 
+                type="password"
+                value={formData.password}
+                onChange={handleChange}
+                required
+                minLength={8}
+              />
+            </div>
+          </div>
+
+          <button 
+            className="w-full h-12 bg-primary text-white font-bold rounded-xl hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-lg shadow-primary/20 disabled:opacity-50" 
+            type="submit"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Creating Account...' : 'Get Started'}
+          </button>
+        </form>
+
+        <p className="text-[10px] text-slate-400 text-center mt-6 leading-relaxed">
+          By joining, you agree to Texconnect's <Link className="underline" to="/terms">Terms of Service</Link> and <Link className="underline" to="/privacy">Privacy Policy</Link>.
+        </p>
+
+        <div className="mt-8 pt-6 border-t border-slate-50 text-center">
+          <p className="text-sm text-slate-600">
+            Already have an account? <Link className="text-primary font-bold hover:underline" to="/login">Log in</Link>
+          </p>
         </div>
       </div>
     </div>
