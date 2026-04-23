@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from '../api/axios';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 
@@ -8,6 +9,37 @@ const ManufacturerDashboard = () => {
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
   const [stats, setStats] = useState({ products: 0, rfqs: 0, revenue: 0 });
+  const [openRfqs, setOpenRfqs] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      setIsLoading(true);
+      try {
+        const [productsRes, rfqsRes] = await Promise.all([
+          axios.get('/products/me'), // Assuming this exists or returns user's products
+          axios.get('/rfqs')
+        ]);
+        
+        // Handle potential error if /products/me doesn't exist yet
+        const myProducts = productsRes.data?.data?.products || [];
+        const rfqs = rfqsRes.data?.data?.rfqs || [];
+        
+        setStats({
+          products: myProducts.length,
+          rfqs: rfqs.length,
+          revenue: 4.5
+        });
+        setOpenRfqs(rfqs.slice(0, 5)); // Show latest 5
+      } catch (error) {
+        console.error('Error fetching manufacturer dashboard data:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -103,37 +135,37 @@ const ManufacturerDashboard = () => {
         {/* Quick Actions */}
         <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
           <h3 className="text-xl font-black text-slate-900 mb-6">Quick Actions</h3>
-          <div className="space-y-4">
-            <Link 
-              to="/dashboard/manufacturer" 
-              onClick={() => addToast('Marketplace exploration coming soon!', 'info')}
-              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
-            >
-              <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-blue-600">search</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-slate-900 font-bold text-sm">Review Open RFQs</p>
-                <p className="text-xs text-slate-500 mt-1">Find buyers looking for your products.</p>
-              </div>
-              <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-            </Link>
-            
-            <Link 
-              to="/dashboard/manufacturer" 
-              onClick={() => addToast('Order management system coming soon!', 'info')}
-              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
-            >
-              <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-emerald-600">local_shipping</span>
-              </div>
-              <div className="flex-1">
-                <p className="text-slate-900 font-bold text-sm">Manage Orders</p>
-                <p className="text-xs text-slate-500 mt-1">Update shipping and order timelines.</p>
-              </div>
-              <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-            </Link>
-          </div>
+            <div className="space-y-4">
+              {isLoading ? (
+                <div className="space-y-4">
+                  {[1, 2].map(i => <div key={i} className="h-20 bg-slate-50 animate-pulse rounded-2xl"></div>)}
+                </div>
+              ) : openRfqs.length > 0 ? (
+                openRfqs.map((rfq) => (
+                  <div key={rfq._id} className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group">
+                    <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
+                      <span className="material-symbols-outlined text-blue-600">request_quote</span>
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-slate-900 font-bold text-sm">{rfq.title}</p>
+                      <p className="text-xs text-slate-500 mt-1">
+                        {rfq.requiredQuantity} units • {rfq.category}
+                      </p>
+                    </div>
+                    <Link 
+                      to={`/messages`}
+                      className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-3 py-2 rounded-lg hover:bg-primary hover:text-white transition-all"
+                    >
+                      Quote
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-6">
+                  <p className="text-xs text-slate-400 font-medium">No open requests found.</p>
+                </div>
+              )}
+            </div>
           
           <div className="mt-8 pt-8 border-t border-slate-50">
             <button 
