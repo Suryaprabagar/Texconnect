@@ -24,9 +24,6 @@ const HomePage = () => {
               <Link to="/products" className="px-8 py-4 bg-primary text-white font-bold rounded-2xl shadow-lg shadow-primary/30 hover:-translate-y-1 transition-all active:scale-95">
                 Explore Inventory
               </Link>
-              <Link to="/register" className="px-8 py-4 bg-white/10 backdrop-blur-md text-white font-bold rounded-2xl border border-white/20 hover:bg-white/20 transition-all">
-                Join Network
-              </Link>
             </div>
           </div>
         </div>

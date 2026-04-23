@@ -1,11 +1,18 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 
 const BuyerDashboard = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const addToast = useToastStore((state) => state.addToast);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    addToast('Logged out successfully', 'success');
+    navigate('/login');
+  };
 
   const activities = [];
 
@@ -151,6 +158,17 @@ const BuyerDashboard = () => {
                 </Link>
               ))}
             </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
+            <h3 className="text-xs font-black text-slate-900 mb-6 uppercase tracking-widest">Account</h3>
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-red-50 text-red-600 font-bold rounded-2xl hover:bg-red-100 transition-all active:scale-95 text-sm"
+            >
+              <span className="material-symbols-outlined">logout</span>
+              Log Out
+            </button>
           </div>
         </aside>
       </div>

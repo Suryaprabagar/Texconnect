@@ -5,7 +5,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   const navItems = [
-    { name: 'Home', path: '/', icon: 'home' },
+    { name: 'Home', path: '/home', icon: 'home' },
     { name: 'Marketplace', path: '/products', icon: 'storefront' },
     { name: 'Post Requirement', path: '/rfqs/create', icon: 'add_box' },
     { name: 'Messages', path: '/messages', icon: 'chat' },
