@@ -33,6 +33,8 @@ app.use('/api/v1/rfqs', require('./routes/rfq.routes.js'));
 app.use('/api/v1/quotes', require('./routes/quote.routes.js'));
 app.use('/api/v1/messages', require('./routes/messages.routes.js'));
 app.use('/api/v1/orders', require('./routes/orders.routes.js'));
+app.use('/api/v1/stats', require('./routes/stats.routes.js'));
+
 
 const errorHandler = require('./middleware/errorHandler');
 

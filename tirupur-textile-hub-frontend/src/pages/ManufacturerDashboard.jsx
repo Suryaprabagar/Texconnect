@@ -154,7 +154,7 @@ const ManufacturerDashboard = () => {
                       </p>
                     </div>
                     <Link 
-                      to={`/messages`}
+                      to={`/rfqs/${rfq._id}`}
                       className="bg-primary/10 text-primary text-[10px] font-black uppercase tracking-widest px-3 py-2 rounded-lg hover:bg-primary hover:text-white transition-all"
                     >
                       Quote

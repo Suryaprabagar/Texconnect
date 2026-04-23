@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import WelcomeHero from '../assets/welcome_pg.jpg';
+import useStats from '../hooks/useStats';
 
 const HomePage = () => {
+  const { stats, loading } = useStats(30000); // Update every 30 seconds
+
   return (
     <div className="space-y-12">
       {/* Hero Bento Box */}
@@ -38,11 +41,11 @@ const HomePage = () => {
           </div>
           <div className="space-y-4">
             <div className="flex items-center gap-4 bg-white/10 p-4 rounded-2xl">
-              <span className="text-3xl font-black">0</span>
+              <span className="text-3xl font-black">{loading ? '...' : stats.suppliers}</span>
               <span className="text-xs font-bold uppercase tracking-widest opacity-80">Suppliers</span>
             </div>
             <div className="flex items-center gap-4 bg-white/10 p-4 rounded-2xl">
-              <span className="text-3xl font-black">0</span>
+              <span className="text-3xl font-black">{loading ? '...' : stats.rfqs}</span>
               <span className="text-xs font-bold uppercase tracking-widest opacity-80">Daily RFQs</span>
             </div>
           </div>
@@ -61,25 +64,28 @@ const HomePage = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: 'Knitted T-Shirts', count: '0 items', icon: 'checkroom' },
-            { name: 'Organic Fabrics', count: '0 items', icon: 'eco' },
-            { name: 'Sportswear', count: '0 items', icon: 'fitness_center' },
-            { name: 'Infant Wear', count: '0 items', icon: 'child_care' },
+            { name: 'Knitted T-Shirts', icon: 'checkroom', slug: 'knitted' },
+            { name: 'Organic Fabrics', icon: 'eco', slug: 'organic' },
+            { name: 'Sportswear', icon: 'fitness_center', slug: 'sportswear' },
+            { name: 'Infant Wear', icon: 'child_care', slug: 'infant' },
           ].map((cat) => (
             <Link 
               key={cat.name} 
-              to={`/products?category=${cat.name.toLowerCase().split(' ')[0]}`}
+              to={`/products?category=${cat.slug}`}
               className="bg-white p-6 rounded-2xl border border-slate-50 shadow-soft hover:shadow-hover hover:-translate-y-1 transition-all cursor-pointer group block"
             >
               <div className="w-12 h-12 bg-slate-50 rounded-xl flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
                 <span className="material-symbols-outlined">{cat.icon}</span>
               </div>
               <h3 className="font-bold text-slate-900">{cat.name}</h3>
-              <p className="text-xs text-slate-400 font-medium mt-1">{cat.count}</p>
+              <p className="text-xs text-slate-400 font-medium mt-1">
+                {loading ? '...' : (stats.categories[cat.slug] || 0)} items
+              </p>
             </Link>
           ))}
         </div>
       </section>
+
 
       {/* Why Choose Us */}
       <section className="bg-white rounded-3xl p-6 lg:p-10 border border-slate-50 shadow-soft">
