@@ -10,6 +10,7 @@ const ManufacturerDashboard = () => {
   const navigate = useNavigate();
   const [stats, setStats] = useState({ products: 0, rfqs: 0, revenue: 0 });
   const [openRfqs, setOpenRfqs] = useState([]);
+  const [myProducts, setMyProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -21,10 +22,10 @@ const ManufacturerDashboard = () => {
           axios.get('/rfqs')
         ]);
         
-        // Handle potential error if /products/me doesn't exist yet
         const myProducts = productsRes.data?.data?.products || [];
         const rfqs = rfqsRes.data?.data?.rfqs || [];
         
+        setMyProducts(myProducts);
         setStats({
           products: myProducts.length,
           rfqs: rfqs.length,
@@ -216,21 +217,26 @@ const ManufacturerDashboard = () => {
             <Link to="/products" className="text-xs font-bold text-primary hover:underline">View All</Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {[
-              { name: 'Organic Cotton Tee', price: '₹180', img: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200' },
-              { name: 'Heavy GSM Hoodie', price: '₹450', img: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=200' },
-              { name: 'Slim Fit Chinos', price: '₹320', img: 'https://images.unsplash.com/photo-1624371414361-e6e8ea402430?auto=format&fit=crop&q=80&w=200' },
-            ].map((product, i) => (
-              <div key={i} className="group">
-                <div className="aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-2 relative">
-                  <img src={product.img} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                  <div className="absolute top-2 right-2">
-                    <span className="bg-white/90 backdrop-blur shadow-sm px-2 py-1 rounded-lg text-[10px] font-black text-primary">{product.price}</span>
+            {isLoading ? (
+              [1, 2, 3].map(i => <div key={i} className="aspect-square bg-slate-50 animate-pulse rounded-2xl"></div>)
+            ) : stats.products > 0 ? (
+              myProducts.map((product) => (
+                <div key={product._id} className="group">
+                  <div className="aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-2 relative">
+                    <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200'} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <div className="absolute top-2 right-2">
+                      <span className="bg-white/90 backdrop-blur shadow-sm px-2 py-1 rounded-lg text-[10px] font-black text-primary">₹{product.pricePerUnit}</span>
+                    </div>
                   </div>
+                  <p className="text-[11px] font-bold text-slate-900 truncate">{product.name}</p>
                 </div>
-                <p className="text-[11px] font-bold text-slate-900 truncate">{product.name}</p>
+              ))
+            ) : (
+              <div className="col-span-full py-10 flex flex-col items-center justify-center text-center">
+                <span className="material-symbols-outlined text-slate-200 text-4xl mb-2">inventory_2</span>
+                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No products listed</p>
               </div>
-            ))}
+            )}
             <Link to="/products/add" className="aspect-square border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-primary/30 hover:bg-primary/5 transition-all group">
               <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">add_circle</span>
               <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary transition-colors uppercase tracking-widest">Add New</span>
