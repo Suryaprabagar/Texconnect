@@ -67,9 +67,16 @@ exports.getProduct = async (req, res, next) => {
 // @access  Private (Manufacturer)
 exports.createProduct = async (req, res, next) => {
   try {
-    const manufacturerProfile = await ManufacturerProfile.findOne({ userId: req.user.id });
+    let manufacturerProfile = await ManufacturerProfile.findOne({ userId: req.user.id });
+    
+    // Auto-create a minimal profile if it doesn't exist to unblock the user
     if (!manufacturerProfile) {
-      return apiResponse(res, 400, false, 'Complete manufacturer profile first');
+      manufacturerProfile = await ManufacturerProfile.create({
+        userId: req.user.id,
+        companyName: req.user.name + "'s Textile Company",
+        description: 'Auto-generated profile for product listing.',
+        isVerified: false
+      });
     }
 
     let imageUrls = [];
