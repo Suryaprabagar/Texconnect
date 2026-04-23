@@ -80,6 +80,7 @@ exports.createProduct = async (req, res, next) => {
     const product = await Product.create({
       ...req.body,
       images: imageUrls.length > 0 ? imageUrls : req.body.images,
+      status: 'active', // Set to active by default so it shows in the list
       userId: req.user.id,
       manufacturerId: manufacturerProfile._id
     });
