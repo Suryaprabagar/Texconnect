@@ -62,6 +62,18 @@ exports.getProduct = async (req, res, next) => {
   }
 };
 
+// @desc    Get current user's products
+// @route   GET /api/v1/products/me
+// @access  Private (Manufacturer)
+exports.getMyProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find({ userId: req.user.id });
+    return apiResponse(res, 200, true, 'Your products fetched', { products });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Create product
 // @route   POST /api/v1/products
 // @access  Private (Manufacturer)

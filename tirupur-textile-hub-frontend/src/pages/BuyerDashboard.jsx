@@ -9,15 +9,16 @@ const BuyerDashboard = () => {
   const { user, logout } = useAuthStore();
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
-  const [rfqCount, setRfqCount] = useState(0);
+  const [myRfqs, setMyRfqs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const response = await axios.get('/rfqs');
-        // Assuming the response returns an array of RFQs for the current user
-        setRfqCount(response.data.data.length);
+        const rfqs = response.data.data.rfqs || [];
+        setMyRfqs(rfqs);
+        setRfqCount(rfqs.length);
       } catch (error) {
         console.error('Error fetching RFQ count:', error);
       } finally {
@@ -34,7 +35,15 @@ const BuyerDashboard = () => {
     navigate('/login');
   };
 
-  const activities = [];
+  const activities = myRfqs.map(rfq => ({
+    id: rfq._id,
+    icon: 'request_quote',
+    color: 'primary',
+    title: `Posted RFQ: ${rfq.title}`,
+    desc: `${rfq.requiredQuantity} units of ${rfq.category}`,
+    time: new Date(rfq.createdAt).toLocaleDateString(),
+    status: rfq.status
+  }));
 
   return (
     <div className="space-y-10">

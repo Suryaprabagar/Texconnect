@@ -4,7 +4,8 @@ const {
   getProduct,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  getMyProducts
 } = require('../controllers/products.controller');
 const { auth, authorize } = require('../middleware/auth');
 
@@ -17,6 +18,7 @@ router.get('/:id', getProduct);
 
 // Protected routes
 router.use(auth);
+router.get('/me', getMyProducts);
 router.post('/', authorize('manufacturer', 'admin'), upload.array('images', 5), createProduct);
 router.put('/:id', authorize('manufacturer', 'admin'), upload.array('images', 5), updateProduct);
 router.delete('/:id', authorize('manufacturer', 'admin'), deleteProduct);
