@@ -14,14 +14,31 @@ const AddProductPage = () => {
     images: [],
   });
   const [previews, setPreviews] = useState([]);
+  const [productImages, setProductImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    
+    const data = new FormData();
+    Object.keys(formData).forEach(key => {
+      if (key !== 'images') {
+        data.append(key, formData[key]);
+      }
+    });
+    
+    productImages.forEach(file => {
+      data.append('images', file);
+    });
+
     try {
-      await axios.post('/products', formData);
+      await axios.post('/products', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       navigate('/dashboard/manufacturer');
     } catch (error) {
       console.error('Error adding product:', error);
@@ -33,19 +50,17 @@ const AddProductPage = () => {
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
     if (files.length > 0) {
+      setProductImages([...productImages, ...files]);
       const newPreviews = files.map(file => URL.createObjectURL(file));
       setPreviews([...previews, ...newPreviews]);
-      // In a real app, you'd upload these to S3/Cloudinary and save URLs
-      // For now, we'll just store the local preview URLs or filenames
-      setFormData({ ...formData, images: [...formData.images, ...files.map(f => f.name)] });
     }
   };
 
   const removeImage = (index) => {
     const newPreviews = previews.filter((_, i) => i !== index);
-    const newImages = formData.images.filter((_, i) => i !== index);
+    const newImages = productImages.filter((_, i) => i !== index);
     setPreviews(newPreviews);
-    setFormData({ ...formData, images: newImages });
+    setProductImages(newImages);
   };
   const handleChange = (e) => {
     const { name, value } = e.target;

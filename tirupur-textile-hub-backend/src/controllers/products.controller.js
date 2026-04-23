@@ -72,8 +72,14 @@ exports.createProduct = async (req, res, next) => {
       return apiResponse(res, 400, false, 'Complete manufacturer profile first');
     }
 
+    let imageUrls = [];
+    if (req.files && req.files.length > 0) {
+      imageUrls = req.files.map(file => file.path); // Cloudinary storage provides 'path' as the URL
+    }
+
     const product = await Product.create({
       ...req.body,
+      images: imageUrls.length > 0 ? imageUrls : req.body.images,
       userId: req.user.id,
       manufacturerId: manufacturerProfile._id
     });
@@ -97,7 +103,16 @@ exports.updateProduct = async (req, res, next) => {
       return apiResponse(res, 403, false, 'Not authorized to update this product');
     }
 
-    product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+    let updateData = { ...req.body };
+    if (req.files && req.files.length > 0) {
+      const newImages = req.files.map(file => file.path);
+      // Logic: if images are uploaded, we replace or append? 
+      // Let's replace for now or handle via client. 
+      // If client sends 'images' as a JSON string of existing ones, we could merge.
+      updateData.images = newImages;
+    }
+
+    product = await Product.findByIdAndUpdate(req.params.id, updateData, {
       new: true,
       runValidators: true,
     });
