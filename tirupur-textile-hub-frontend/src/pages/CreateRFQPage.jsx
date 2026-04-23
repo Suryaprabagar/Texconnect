@@ -5,12 +5,12 @@ import { useToastStore } from '../store/toastStore';
 
 const CreateRFQPage = () => {
   const [formData, setFormData] = useState({
-    productName: '',
-    category: 'Woven Fabric',
-    quantity: '',
-    deadline: '',
-    budget: '',
-    notes: '',
+    title: '',
+    category: 'T-Shirts',
+    requiredQuantity: '',
+    deliveryDeadline: '',
+    targetPricePerUnit: '',
+    description: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -25,8 +25,7 @@ const CreateRFQPage = () => {
       navigate('/home');
     } catch (error) {
       console.error('Error creating RFQ:', error);
-      addToast('Requirement posted successfully!', 'success'); // For demo/UX fallback
-      navigate('/home');
+      addToast(error.response?.data?.message || 'Failed to post requirement', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -80,11 +79,11 @@ const CreateRFQPage = () => {
                   ))}
                 </div>
                 <input 
-                  name="productName"
+                  name="title"
                   className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
                   placeholder={formData.category === 'Custom' ? "Enter your custom garment name..." : "Specific product details (e.g., Organic Cotton T-Shirt)"} 
                   type="text"
-                  value={formData.productName}
+                  value={formData.title}
                   onChange={handleChange}
                   required
                 />
@@ -96,26 +95,23 @@ const CreateRFQPage = () => {
                   <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Required Quantity</label>
                   <div className="relative">
                     <input 
-                      name="quantity"
+                      name="requiredQuantity"
                       className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
                       placeholder="0.00" 
                       type="number"
-                      value={formData.quantity}
+                      value={formData.requiredQuantity}
                       onChange={handleChange}
                       required
                     />
-                    <div className="absolute inset-y-0 right-6 flex items-center pointer-events-none">
-                      <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Meters</span>
-                    </div>
                   </div>
                 </div>
                 <div className="space-y-2">
                   <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Delivery Deadline</label>
                   <input 
-                    name="deadline"
+                    name="deliveryDeadline"
                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
                     type="date"
-                    value={formData.deadline}
+                    value={formData.deliveryDeadline}
                     onChange={handleChange}
                     required
                   />
@@ -128,11 +124,11 @@ const CreateRFQPage = () => {
                 <div className="relative">
                   <span className="absolute left-6 top-1/2 -translate-y-1/2 text-slate-400 font-bold">₹</span>
                   <input 
-                    name="budget"
+                    name="targetPricePerUnit"
                     className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 pl-10 pr-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
                     placeholder="Max budget per unit" 
                     type="number"
-                    value={formData.budget}
+                    value={formData.targetPricePerUnit}
                     onChange={handleChange}
                   />
                 </div>
@@ -142,10 +138,10 @@ const CreateRFQPage = () => {
               <div className="space-y-2">
                 <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Additional Specifications</label>
                 <textarea 
-                  name="notes"
+                  name="description"
                   className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium min-h-[120px]" 
                   placeholder="Mention GSM, Width, Color, Finishing requirements..." 
-                  value={formData.notes}
+                  value={formData.description}
                   onChange={handleChange}
                 ></textarea>
               </div>

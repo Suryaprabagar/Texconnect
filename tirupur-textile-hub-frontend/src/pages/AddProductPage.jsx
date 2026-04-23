@@ -11,7 +11,9 @@ const AddProductPage = () => {
     description: '',
     fabricType: '',
     gsm: '',
+    images: [],
   });
+  const [previews, setPreviews] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -28,6 +30,23 @@ const AddProductPage = () => {
     }
   };
 
+  const handleImageChange = (e) => {
+    const files = Array.from(e.target.files);
+    if (files.length > 0) {
+      const newPreviews = files.map(file => URL.createObjectURL(file));
+      setPreviews([...previews, ...newPreviews]);
+      // In a real app, you'd upload these to S3/Cloudinary and save URLs
+      // For now, we'll just store the local preview URLs or filenames
+      setFormData({ ...formData, images: [...formData.images, ...files.map(f => f.name)] });
+    }
+  };
+
+  const removeImage = (index) => {
+    const newPreviews = previews.filter((_, i) => i !== index);
+    const newImages = formData.images.filter((_, i) => i !== index);
+    setPreviews(newPreviews);
+    setFormData({ ...formData, images: newImages });
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
@@ -123,6 +142,31 @@ const AddProductPage = () => {
                 onChange={handleChange}
               />
             </div>
+          </div>
+
+          {/* Image Upload */}
+          <div className="space-y-4">
+            <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Product Images</label>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              {previews.map((src, index) => (
+                <div key={index} className="aspect-square relative rounded-2xl overflow-hidden border border-slate-100 group">
+                  <img src={src} alt="Preview" className="w-full h-full object-cover" />
+                  <button 
+                    type="button"
+                    onClick={() => removeImage(index)}
+                    className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                  >
+                    <span className="material-symbols-outlined text-sm">close</span>
+                  </button>
+                </div>
+              ))}
+              <label className="aspect-square border-2 border-dashed border-slate-200 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-primary/50 hover:bg-primary/5 transition-all cursor-pointer group">
+                <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">add_photo_alternate</span>
+                <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary uppercase tracking-widest">Upload</span>
+                <input type="file" multiple accept="image/*" className="hidden" onChange={handleImageChange} />
+              </label>
+            </div>
+            <p className="text-[10px] text-slate-400 font-medium">PNG, JPG or WebP. Max 5MB per file.</p>
           </div>
 
           <div className="space-y-2">

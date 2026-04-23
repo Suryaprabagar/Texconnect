@@ -25,12 +25,20 @@ exports.createRFQ = async (req, res, next) => {
   }
 };
 
-// @desc    Get all open RFQs
+// @desc    Get all RFQs (filtered for buyers)
 // @route   GET /api/v1/rfqs
-// @access  Public (for Manufacturers to see)
+// @access  Public/Private
 exports.getRFQs = async (req, res, next) => {
   try {
-    const rfqs = await RFQ.find({ status: 'open' }).populate('buyerId', 'name');
+    let query = { status: 'open' };
+    
+    // If user is authenticated and is a buyer, show their RFQs (including non-open ones if needed)
+    // For now, let's just filter open ones for manufacturers, and own ones for buyers
+    if (req.user && req.user.role === 'buyer') {
+      query = { buyerId: req.user.id };
+    }
+
+    const rfqs = await RFQ.find(query).populate('buyerId', 'name').sort({ createdAt: -1 });
     return apiResponse(res, 200, true, 'RFQs fetched', { rfqs });
   } catch (error) {
     next(error);
