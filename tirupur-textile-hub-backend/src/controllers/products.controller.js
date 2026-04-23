@@ -67,7 +67,9 @@ exports.getProduct = async (req, res, next) => {
 // @access  Private (Manufacturer)
 exports.getMyProducts = async (req, res, next) => {
   try {
-    const products = await Product.find({ userId: req.user.id });
+    console.log('Fetching products for userId:', req.user._id);
+    const products = await Product.find({ userId: req.user._id });
+    console.log(`Found ${products.length} products`);
     return apiResponse(res, 200, true, 'Your products fetched', { products });
   } catch (error) {
     next(error);
@@ -103,7 +105,8 @@ exports.createProduct = async (req, res, next) => {
       userId: req.user.id,
       manufacturerId: manufacturerProfile._id
     });
-
+    
+    console.log('Product created with userId:', product.userId);
     return apiResponse(res, 201, true, 'Product created successfully', { product });
   } catch (error) {
     next(error);
