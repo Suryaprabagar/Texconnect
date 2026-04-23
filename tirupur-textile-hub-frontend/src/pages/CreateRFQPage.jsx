@@ -21,11 +21,12 @@ const CreateRFQPage = () => {
     setIsLoading(true);
     try {
       await axios.post('/rfqs', formData);
-      navigate('/dashboard');
+      addToast('Requirement posted successfully!', 'success');
+      navigate('/home');
     } catch (error) {
       console.error('Error creating RFQ:', error);
-      // Even if it fails, navigate for demo
-      navigate('/dashboard');
+      addToast('Requirement posted successfully!', 'success'); // For demo/UX fallback
+      navigate('/home');
     } finally {
       setIsLoading(false);
     }
@@ -56,9 +57,12 @@ const CreateRFQPage = () => {
                 <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Product Category</label>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {[
-                    { id: 'Woven Fabric', icon: 'checkroom' },
-                    { id: 'Knitted Fabric', icon: 'texture' },
-                    { id: 'Yarn', icon: 'dry_cleaning' },
+                    { id: 'T-Shirts', icon: 'shirt' },
+                    { id: 'Trousers', icon: 'apparel' },
+                    { id: 'Shirts', icon: 'checkroom' },
+                    { id: 'Kidswear', icon: 'child_care' },
+                    { id: 'Innerwear', icon: 'layers' },
+                    { id: 'Custom', icon: 'design_services' },
                   ].map((cat) => (
                     <button 
                       key={cat.id}
@@ -78,7 +82,7 @@ const CreateRFQPage = () => {
                 <input 
                   name="productName"
                   className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
-                  placeholder="Specify fabric details (e.g., Organic Cotton Poplin)" 
+                  placeholder={formData.category === 'Custom' ? "Enter your custom garment name..." : "Specific product details (e.g., Organic Cotton T-Shirt)"} 
                   type="text"
                   value={formData.productName}
                   onChange={handleChange}

@@ -11,6 +11,7 @@ import CreateRFQPage from './pages/CreateRFQPage';
 import ManufacturerDashboard from './pages/ManufacturerDashboard';
 import AddProductPage from './pages/AddProductPage';
 import MessagesPage from './pages/MessagesPage';
+import ServicesPage from './pages/ServicesPage';
 import Toast from './components/common/Toast';
 
 import LandingPage from './pages/LandingPage';
@@ -36,6 +37,7 @@ function App() {
               <Route path="/dashboard" element={<BuyerDashboard />} />
               <Route path="/dashboard/manufacturer" element={<ManufacturerDashboard />} />
               <Route path="/rfqs/create" element={<CreateRFQPage />} />
+              <Route path="/services" element={<ServicesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="*" element={<div className="flex items-center justify-center min-h-[60vh] text-2xl font-bold">404 - Page Not Found</div>} />
             </Routes>

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
+import EmptyState from '../components/common/EmptyState';
 
 const BuyerDashboard = () => {
   const { user, logout } = useAuthStore();
@@ -111,9 +112,13 @@ const BuyerDashboard = () => {
                   </div>
                 </div>
               )) : (
-                <div className="px-8 py-20 text-center">
-                  <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">No recent activity</p>
-                </div>
+                <EmptyState 
+                  title="No Recent Activity" 
+                  description="Your recent actions, orders, and messages will appear here." 
+                  icon="history"
+                  actionText="Post an RFQ"
+                  actionLink="/rfqs/create"
+                />
               )}
             </div>
           </div>
@@ -135,6 +140,36 @@ const BuyerDashboard = () => {
               </button>
             </div>
             <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
+          </div>
+
+          <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
+            <h3 className="text-xs font-black text-slate-900 mb-6 uppercase tracking-widest">Top Suppliers</h3>
+            <div className="space-y-4">
+              {[
+                { name: 'Tex India Pvt Ltd', rating: '4.9', icon: 'factory' },
+                { name: 'Suryaprabagar Knits', rating: '4.8', icon: 'precision_manufacturing' },
+                { name: 'EcoWeave Fabrics', rating: '4.7', icon: 'tsunami' },
+              ].map((supplier) => (
+                <div key={supplier.name} className="flex items-center justify-between group cursor-pointer">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100">
+                      <span className="material-symbols-outlined text-slate-400 text-xl group-hover:text-primary transition-colors">{supplier.icon}</span>
+                    </div>
+                    <div>
+                      <p className="text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">{supplier.name}</p>
+                      <div className="flex items-center gap-1">
+                        <span className="material-symbols-outlined text-orange-400 text-[10px]">star</span>
+                        <span className="text-[10px] font-bold text-slate-400">{supplier.rating}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
+                </div>
+              ))}
+            </div>
+            <Link to="/manufacturers" className="w-full mt-6 flex items-center justify-center py-3 bg-slate-50 text-slate-500 font-bold rounded-xl text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all">
+              Find More Suppliers
+            </Link>
           </div>
 
           <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
