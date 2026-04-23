@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import { useToastStore } from '../store/toastStore';
 
 const AddProductPage = () => {
   const [formData, setFormData] = useState({
@@ -10,9 +11,13 @@ const AddProductPage = () => {
     moq: '',
     description: '',
     fabricType: '',
+    fabricComposition: '',
     gsm: '',
+    availableSizes: [],
+    colors: '',
     images: [],
   });
+  const addToast = useToastStore((state) => state.addToast);
   const [previews, setPreviews] = useState([]);
   const [productImages, setProductImages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -24,10 +29,23 @@ const AddProductPage = () => {
     
     const data = new FormData();
     Object.keys(formData).forEach(key => {
-      if (key !== 'images') {
+      if (key !== 'images' && key !== 'availableSizes' && key !== 'colors') {
         data.append(key, formData[key]);
       }
     });
+    
+    // Append sizes as multiple entries for multer to pick up as array
+    formData.availableSizes.forEach(size => {
+      data.append('availableSizes', size);
+    });
+
+    // Handle colors - split by comma and trim
+    if (formData.colors) {
+      const colorArray = formData.colors.split(',').map(c => c.trim()).filter(c => c !== '');
+      colorArray.forEach(color => {
+        data.append('colors', color);
+      });
+    }
     
     productImages.forEach(file => {
       data.append('images', file);
@@ -39,9 +57,11 @@ const AddProductPage = () => {
           'Content-Type': 'multipart/form-data',
         },
       });
+      addToast('Product added successfully!', 'success');
       navigate('/dashboard/manufacturer');
     } catch (error) {
       console.error('Error adding product:', error);
+      addToast(error.response?.data?.message || 'Failed to add product', 'error');
     } finally {
       setIsLoading(false);
     }
@@ -65,6 +85,15 @@ const AddProductPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSizeToggle = (size) => {
+    const currentSizes = [...formData.availableSizes];
+    if (currentSizes.includes(size)) {
+      setFormData({ ...formData, availableSizes: currentSizes.filter(s => s !== size) });
+    } else {
+      setFormData({ ...formData, availableSizes: [...currentSizes, size] });
+    }
   };
 
   return (
@@ -147,6 +176,20 @@ const AddProductPage = () => {
               />
             </div>
             <div className="space-y-2">
+              <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Fabric Composition</label>
+              <input 
+                name="fabricComposition"
+                className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
+                placeholder="e.g. 100% Cotton, 60/40 Blended" 
+                type="text"
+                value={formData.fabricComposition}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="space-y-2">
               <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">GSM</label>
               <input 
                 name="gsm"
@@ -156,6 +199,37 @@ const AddProductPage = () => {
                 value={formData.gsm}
                 onChange={handleChange}
               />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Available Colors</label>
+              <input 
+                name="colors"
+                className="w-full bg-slate-50 border border-slate-100 rounded-2xl py-4 px-6 focus:ring-2 focus:ring-primary transition-all text-sm font-medium" 
+                placeholder="e.g. Black, White, Navy Blue" 
+                type="text"
+                value={formData.colors}
+                onChange={handleChange}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <label className="text-xs font-black text-slate-900 uppercase tracking-widest block">Available Sizes</label>
+            <div className="flex flex-wrap gap-3">
+              {['XS', 'S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'Custom'].map(size => (
+                <button
+                  key={size}
+                  type="button"
+                  onClick={() => handleSizeToggle(size)}
+                  className={`px-4 py-2 rounded-xl text-xs font-bold border-2 transition-all ${
+                    formData.availableSizes.includes(size)
+                      ? 'bg-primary border-primary text-white shadow-md'
+                      : 'border-slate-100 text-slate-400 hover:border-slate-200'
+                  }`}
+                >
+                  {size}
+                </button>
+              ))}
             </div>
           </div>
 
