@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 import EmptyState from '../components/common/EmptyState';
+import axios from '../api/axios';
 
 const BuyerDashboard = () => {
   const { user, logout } = useAuthStore();
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
+  const [rfqCount, setRfqCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchDashboardData = async () => {
+      try {
+        const response = await axios.get('/rfqs');
+        // Assuming the response returns an array of RFQs for the current user
+        setRfqCount(response.data.data.length);
+      } catch (error) {
+        console.error('Error fetching RFQ count:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchDashboardData();
+  }, []);
 
   const handleLogout = () => {
     logout();
@@ -48,7 +67,9 @@ const BuyerDashboard = () => {
           </div>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Active RFQs</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-slate-900">0</h3>
+            <h3 className="text-4xl font-black text-slate-900">
+              {isLoading ? '...' : rfqCount}
+            </h3>
             <span className="text-xs text-slate-400 font-medium">Requests</span>
           </div>
         </div>
