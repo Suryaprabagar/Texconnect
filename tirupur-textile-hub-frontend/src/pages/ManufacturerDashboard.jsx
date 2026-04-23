@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
 
 const ManufacturerDashboard = () => {
   const { user } = useAuthStore();
-  const [stats, setStats] = useState({ products: 24, rfqs: 15, revenue: 450000 });
+  const addToast = useToastStore((state) => state.addToast);
+  const [stats, setStats] = useState({ products: 0, rfqs: 0, revenue: 0 });
 
   return (
     <div className="space-y-10">
@@ -15,7 +17,11 @@ const ManufacturerDashboard = () => {
           <p className="text-slate-500 text-lg mt-1 font-medium">Managing: <span className="text-primary">{user?.name || 'Your Factory'}</span></p>
         </div>
         <div className="flex items-center gap-3">
-          <Link to="/products/manage" className="h-12 px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center shadow-sm text-sm">
+          <Link 
+            to="/dashboard/manufacturer" 
+            onClick={() => addToast('Inventory management coming soon!', 'info')}
+            className="h-12 px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center shadow-sm text-sm"
+          >
             <span className="material-symbols-outlined mr-2">inventory_2</span>
             Manage Inventory
           </Link>
@@ -85,7 +91,11 @@ const ManufacturerDashboard = () => {
         <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
           <h3 className="text-xl font-black text-slate-900 mb-6">Quick Actions</h3>
           <div className="space-y-4">
-            <Link to="/rfqs/incoming" className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group">
+            <Link 
+              to="/dashboard/manufacturer" 
+              onClick={() => addToast('Marketplace exploration coming soon!', 'info')}
+              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
+            >
               <div className="w-12 h-12 bg-blue-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                 <span className="material-symbols-outlined text-blue-600">search</span>
               </div>
@@ -96,7 +106,11 @@ const ManufacturerDashboard = () => {
               <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
             </Link>
             
-            <Link to="/orders/manage" className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group">
+            <Link 
+              to="/dashboard/manufacturer" 
+              onClick={() => addToast('Order management system coming soon!', 'info')}
+              className="flex items-center p-4 rounded-2xl border border-slate-100 hover:bg-slate-50 transition-all group"
+            >
               <div className="w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform">
                 <span className="material-symbols-outlined text-emerald-600">local_shipping</span>
               </div>

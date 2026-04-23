@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useToastStore } from '../../store/toastStore';
 
 const ProductCard = ({ product }) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const addToast = useToastStore((state) => state.addToast);
+
+  const toggleFavorite = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsFavorited(!isFavorited);
+    addToast(isFavorited ? 'Removed from favorites' : 'Added to favorites', 'success');
+  };
+
   return (
     <div className="group bg-white rounded-2xl shadow-soft hover:shadow-hover transition-all duration-300 flex flex-col overflow-hidden border border-slate-50">
       <div className="aspect-[4/5] relative overflow-hidden">
@@ -15,8 +26,13 @@ const ProductCard = ({ product }) => {
             {product.category || 'Apparel'}
           </span>
         </div>
-        <button className="absolute top-4 right-4 w-8 h-8 bg-white/90 backdrop-blur rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
-          <span className="material-symbols-outlined text-lg">favorite</span>
+        <button 
+          onClick={toggleFavorite}
+          className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+            isFavorited ? 'bg-red-500 text-white shadow-lg' : 'bg-white/90 backdrop-blur text-slate-400 hover:text-red-500'
+          }`}
+        >
+          <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: isFavorited ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
         </button>
       </div>
       

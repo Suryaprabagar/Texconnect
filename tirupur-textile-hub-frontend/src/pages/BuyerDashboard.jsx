@@ -1,15 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
 
 const BuyerDashboard = () => {
   const { user } = useAuthStore();
+  const addToast = useToastStore((state) => state.addToast);
 
-  const activities = [
-    { id: 1, title: 'Order #TX-9082 Shipped', desc: 'Premium Egyptian Cotton (2000kg) is en route to Delhi Warehouse.', time: '2 mins ago', status: 'In Transit', icon: 'local_shipping', color: 'blue' },
-    { id: 2, title: 'New Quote Received', desc: 'Surat Fabrics Ltd. responded to your RFQ for Organic Linen.', time: '1 hour ago', status: 'New Quote', icon: 'verified', color: 'emerald' },
-    { id: 3, title: 'Sample Feedback Requested', desc: 'Supplier "Global Weaves" wants feedback on the Bamboo Silk sample.', time: '3 hours ago', status: 'Pending Action', icon: 'feedback', color: 'orange' },
-  ];
+  const activities = [];
 
   return (
     <div className="space-y-10">
@@ -38,11 +36,11 @@ const BuyerDashboard = () => {
             <div className="p-3 bg-primary/10 rounded-xl">
               <span className="material-symbols-outlined text-primary">request_quote</span>
             </div>
-            <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+12%</span>
+            <span className="text-[10px] font-black text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">+0%</span>
           </div>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Active RFQs</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-slate-900">24</h3>
+            <h3 className="text-4xl font-black text-slate-900">0</h3>
             <span className="text-xs text-slate-400 font-medium">Requests</span>
           </div>
         </div>
@@ -56,7 +54,7 @@ const BuyerDashboard = () => {
           </div>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Unread Messages</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-slate-900">08</h3>
+            <h3 className="text-4xl font-black text-slate-900">0</h3>
             <span className="text-xs text-slate-400 font-medium">New alerts</span>
           </div>
         </div>
@@ -69,7 +67,7 @@ const BuyerDashboard = () => {
           </div>
           <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Pending Orders</p>
           <div className="flex items-baseline gap-2">
-            <h3 className="text-4xl font-black text-slate-900">15</h3>
+            <h3 className="text-4xl font-black text-slate-900">0</h3>
             <span className="text-xs text-slate-400 font-medium">In progress</span>
           </div>
         </div>
@@ -81,10 +79,15 @@ const BuyerDashboard = () => {
           <div className="bg-white rounded-2xl shadow-soft border border-slate-50 overflow-hidden">
             <div className="px-8 py-6 border-b border-slate-50 flex justify-between items-center">
               <h3 className="text-xl font-black text-slate-900">Recent Activity</h3>
-              <button className="text-primary text-xs font-bold hover:underline">View All</button>
+              <button 
+                onClick={() => addToast('Activity history coming soon!', 'info')}
+                className="text-primary text-xs font-bold hover:underline"
+              >
+                View All
+              </button>
             </div>
             <div className="divide-y divide-slate-50">
-              {activities.map((activity) => (
+              {activities.length > 0 ? activities.map((activity) => (
                 <div key={activity.id} className="px-8 py-5 flex items-center hover:bg-slate-50 transition-colors cursor-pointer group">
                   <div className={`w-12 h-12 rounded-xl bg-${activity.color}-50 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform`}>
                     <span className={`material-symbols-outlined text-${activity.color}-600`}>{activity.icon}</span>
@@ -100,7 +103,11 @@ const BuyerDashboard = () => {
                     </span>
                   </div>
                 </div>
-              ))}
+              )) : (
+                <div className="px-8 py-20 text-center">
+                  <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">No recent activity</p>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -113,7 +120,10 @@ const BuyerDashboard = () => {
               <p className="text-indigo-100 text-sm mb-6 leading-relaxed">
                 Cotton prices are expected to drop by 4% next week. Plan your procurement accordingly.
               </p>
-              <button className="w-full bg-white text-primary font-bold py-3 rounded-xl hover:bg-slate-50 transition-colors text-xs uppercase tracking-widest">
+              <button 
+                onClick={() => addToast('Market analysis tool coming soon!', 'info')}
+                className="w-full bg-white text-primary font-bold py-3 rounded-xl hover:bg-slate-50 transition-colors text-xs uppercase tracking-widest"
+              >
                 Analyze Prices
               </button>
             </div>
@@ -128,13 +138,17 @@ const BuyerDashboard = () => {
                 { name: 'Organic Linen', img: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&q=80&w=100' },
                 { name: 'Bamboo Silk', img: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=80&w=100' },
               ].map((item) => (
-                <div key={item.name} className="flex items-center group cursor-pointer">
+                <Link 
+                  key={item.name} 
+                  to={`/products?category=${item.name.toLowerCase().split(' ')[0]}`}
+                  className="flex items-center group cursor-pointer"
+                >
                   <div className="w-10 h-10 rounded-xl bg-slate-100 mr-3 overflow-hidden border border-slate-100">
                     <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform" alt={item.name} />
                   </div>
                   <span className="flex-1 text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">{item.name}</span>
                   <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-                </div>
+                </Link>
               ))}
             </div>
           </div>

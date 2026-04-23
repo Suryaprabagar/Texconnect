@@ -1,20 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthStore } from '../store/authStore';
+import { useToastStore } from '../store/toastStore';
 
 const MessagesPage = () => {
   const { user } = useAuthStore();
+  const addToast = useToastStore((state) => state.addToast);
   const [conversations, setConversations] = useState([]);
   const [selectedConv, setSelectedConv] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
 
   useEffect(() => {
-    // Mock conversations
-    setConversations([
-      { _id: '1', name: 'Cotton Craft Int.', lastMsg: 'Yes, the 400TC samples are ready.', time: '10:42 AM', unread: 0, online: true, img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=100' },
-      { _id: '2', name: 'Linen Wonders', lastMsg: 'Looking forward to the quotation.', time: 'Yesterday', unread: 0, online: false, img: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=100' },
-      { _id: '3', name: 'Silk Route Sourcing', lastMsg: 'The shipping delay was cleared today.', time: 'Mon', unread: 2, online: true, img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100' },
-    ]);
+    // No mock conversations as requested
+    setConversations([]);
   }, []);
 
   const selectConversation = (conv) => {
@@ -39,7 +37,10 @@ const MessagesPage = () => {
       <section className="w-[380px] border-r border-slate-50 flex flex-col">
         <div className="p-6 flex items-center justify-between border-b border-slate-50">
           <h2 className="text-xl font-black text-slate-900">Inbox</h2>
-          <button className="w-10 h-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center hover:scale-95 transition-transform">
+          <button 
+            onClick={() => addToast('Start new conversation coming soon!', 'info')}
+            className="w-10 h-10 bg-primary/5 text-primary rounded-xl flex items-center justify-center hover:scale-95 transition-transform cursor-pointer"
+          >
             <span className="material-symbols-outlined">edit_square</span>
           </button>
         </div>
@@ -91,9 +92,9 @@ const MessagesPage = () => {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">call</span></button>
-                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">videocam</span></button>
-                <button className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">info</span></button>
+                <button onClick={() => addToast('Voice calling coming soon!', 'info')} className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">call</span></button>
+                <button onClick={() => addToast('Video calling coming soon!', 'info')} className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">videocam</span></button>
+                <button onClick={() => addToast('Profile details coming soon!', 'info')} className="w-10 h-10 hover:bg-slate-50 rounded-xl text-slate-400 transition-all flex items-center justify-center"><span className="material-symbols-outlined">info</span></button>
               </div>
             </div>
 
@@ -121,8 +122,8 @@ const MessagesPage = () => {
             <div className="p-6 bg-white border-t border-slate-50">
               <form onSubmit={handleSend} className="flex items-end gap-4 max-w-5xl mx-auto">
                 <div className="flex gap-1 mb-1">
-                  <button type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">add_circle</span></button>
-                  <button type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">image</span></button>
+                  <button onClick={() => addToast('File attachments coming soon!', 'info')} type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">add_circle</span></button>
+                  <button onClick={() => addToast('Image selection coming soon!', 'info')} type="button" className="w-10 h-10 text-slate-400 hover:text-primary transition-colors flex items-center justify-center"><span className="material-symbols-outlined">image</span></button>
                 </div>
                 <div className="flex-1 bg-slate-50 rounded-2xl flex items-center px-4">
                   <textarea 

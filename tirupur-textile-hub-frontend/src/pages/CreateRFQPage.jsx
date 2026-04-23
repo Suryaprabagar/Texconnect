@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
+import { useToastStore } from '../store/toastStore';
 
 const CreateRFQPage = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ const CreateRFQPage = () => {
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const addToast = useToastStore((state) => state.addToast);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -145,7 +147,13 @@ const CreateRFQPage = () => {
               </div>
 
               <div className="pt-6 border-t border-slate-50 flex items-center justify-between">
-                <button type="button" className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors">Save as Draft</button>
+                <button 
+                  type="button" 
+                  onClick={() => addToast('RFQ saved as draft!', 'success')}
+                  className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 transition-colors"
+                >
+                  Save as Draft
+                </button>
                 <button 
                   type="submit" 
                   disabled={isLoading}
@@ -178,11 +186,11 @@ const CreateRFQPage = () => {
             <div className="p-6 space-y-4">
               <div className="flex justify-between items-center">
                 <p className="text-xs font-bold text-slate-500">Manufacturers Online</p>
-                <p className="text-xs font-black text-primary">124</p>
+                <p className="text-xs font-black text-primary">0</p>
               </div>
               <div className="flex justify-between items-center">
                 <p className="text-xs font-bold text-slate-500">Avg. Response Time</p>
-                <p className="text-xs font-black text-primary">4h</p>
+                <p className="text-xs font-black text-primary">-</p>
               </div>
             </div>
           </div>

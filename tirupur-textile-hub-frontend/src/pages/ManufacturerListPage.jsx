@@ -14,13 +14,8 @@ const ManufacturerListPage = () => {
       setManufacturers(response.data.data.manufacturers);
     } catch (error) {
       console.error('Error fetching manufacturers:', error);
-      // Mock data
-      setManufacturers([
-        { _id: '1', companyName: 'Oceanic Textiles', isVerified: true, verificationBadge: 'premium', rating: 4.8 },
-        { _id: '2', companyName: 'Royal Knits', isVerified: true, verificationBadge: 'none', rating: 4.5 },
-        { _id: '3', companyName: 'Sun Garments', isVerified: false, verificationBadge: 'none', rating: 4.2 },
-        { _id: '4', companyName: 'PureCotton Pvt Ltd.', isVerified: true, verificationBadge: 'premium', rating: 4.9 },
-      ]);
+      // No mock manufacturers as requested
+      setManufacturers([]);
     } finally {
       setIsLoading(false);
     }

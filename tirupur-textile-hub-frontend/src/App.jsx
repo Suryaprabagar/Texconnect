@@ -11,11 +11,13 @@ import CreateRFQPage from './pages/CreateRFQPage';
 import ManufacturerDashboard from './pages/ManufacturerDashboard';
 import AddProductPage from './pages/AddProductPage';
 import MessagesPage from './pages/MessagesPage';
+import Toast from './components/common/Toast';
 
 function App() {
   return (
     <Router>
       <MainLayout>
+        <Toast />
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
