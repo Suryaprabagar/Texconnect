@@ -53,6 +53,20 @@ const TopBar = () => {
               {user?.name?.[0] || '?'}
             </div>
           </div>
+
+          {user && (
+            <button 
+              onClick={() => {
+                useAuthStore.getState().logout();
+                addToast('Logged out successfully', 'success');
+                navigate('/login');
+              }}
+              className="ml-2 p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-xl transition-all group"
+              title="Logout"
+            >
+              <span className="material-symbols-outlined text-[20px]">logout</span>
+            </button>
+          )}
         </div>
       </div>
     </header>

@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useToastStore } from '../store/toastStore';
 
 const ManufacturerDashboard = () => {
-  const { user } = useAuthStore();
+  const { user, logout } = useAuthStore();
   const addToast = useToastStore((state) => state.addToast);
+  const navigate = useNavigate();
   const [stats, setStats] = useState({ products: 0, rfqs: 0, revenue: 0 });
+
+  const handleLogout = () => {
+    logout();
+    addToast('Logged out successfully', 'success');
+    navigate('/login');
+  };
 
   return (
     <div className="space-y-10">
@@ -120,6 +127,16 @@ const ManufacturerDashboard = () => {
               </div>
               <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
             </Link>
+          </div>
+          
+          <div className="mt-8 pt-8 border-t border-slate-50">
+            <button 
+              onClick={handleLogout}
+              className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-red-50 text-red-600 font-bold rounded-2xl hover:bg-red-100 transition-all active:scale-95 text-sm"
+            >
+              <span className="material-symbols-outlined">logout</span>
+              Log Out
+            </button>
           </div>
         </section>
       </div>
