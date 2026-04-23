@@ -63,7 +63,7 @@ const RegisterPage = () => {
         <p className="text-sm text-slate-500 mt-1">Join thousands of industry professionals</p>
       </div>
 
-      <div className="bg-white p-8 rounded-2xl shadow-soft w-full max-w-[460px] border border-slate-50">
+      <div className="bg-white p-6 lg:p-8 rounded-3xl shadow-soft w-full max-w-[460px] border border-slate-50">
         <h2 className="text-xl font-bold text-on-surface mb-6">Create Account</h2>
         
         {error && (

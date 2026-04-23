@@ -18,29 +18,29 @@ const ManufacturerDashboard = () => {
   return (
     <div className="space-y-10">
       {/* Header */}
-      <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h2 className="text-3xl font-black text-slate-900 tracking-tight">Manufacturer Panel</h2>
+            <h2 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">Manufacturer Panel</h2>
             <span className="bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full text-[10px] font-black uppercase tracking-widest border border-emerald-100 flex items-center gap-1">
               <span className="material-symbols-outlined text-xs">verified</span>
               Verified
             </span>
           </div>
-          <p className="text-slate-500 text-lg font-medium">Managing: <span className="text-primary">{user?.name || 'Your Factory'}</span></p>
+          <p className="text-slate-500 text-base lg:text-lg font-medium">Managing: <span className="text-primary">{user?.name || 'Your Factory'}</span></p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 lg:gap-3">
           <Link 
             to="/dashboard/manufacturer" 
             onClick={() => addToast('Inventory management coming soon!', 'info')}
-            className="h-12 px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center shadow-sm text-sm"
+            className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm text-xs lg:text-sm whitespace-nowrap"
           >
-            <span className="material-symbols-outlined mr-2">inventory_2</span>
-            Manage Inventory
+            <span className="material-symbols-outlined mr-2 text-xl">inventory_2</span>
+            Inventory
           </Link>
-          <Link to="/products/add" className="h-12 px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center transform active:scale-95 text-sm">
-            <span className="material-symbols-outlined mr-2">add_circle</span>
-            Add New Product
+          <Link to="/products/add" className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center justify-center transform active:scale-95 text-xs lg:text-sm whitespace-nowrap">
+            <span className="material-symbols-outlined mr-2 text-xl">add_circle</span>
+            Add Product
           </Link>
         </div>
       </section>

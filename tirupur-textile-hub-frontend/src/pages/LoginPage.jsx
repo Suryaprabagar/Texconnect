@@ -50,7 +50,7 @@ const LoginPage = () => {
         <p className="text-sm text-slate-500 mt-1">Access your B2B textile workspace</p>
       </div>
 
-      <div className="bg-white p-8 rounded-2xl shadow-soft w-full max-w-[420px] border border-slate-50">
+      <div className="bg-white p-6 lg:p-8 rounded-3xl shadow-soft w-full max-w-[420px] border border-slate-50">
         <h2 className="text-xl font-bold text-on-surface mb-6">Log in</h2>
         
         {error && (
