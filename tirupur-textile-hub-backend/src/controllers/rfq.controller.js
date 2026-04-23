@@ -45,6 +45,21 @@ exports.getRFQs = async (req, res, next) => {
   }
 };
 
+// @desc    Get single RFQ
+// @route   GET /api/v1/rfqs/:id
+// @access  Private
+exports.getRFQ = async (req, res, next) => {
+  try {
+    const rfq = await RFQ.findById(req.params.id).populate('buyerId', 'name email');
+    if (!rfq) {
+      return apiResponse(res, 404, false, 'RFQ not found');
+    }
+    return apiResponse(res, 200, true, 'RFQ details fetched', { rfq });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Submit quote for an RFQ
 // @route   POST /api/v1/quotes
 // @access  Private (Manufacturer)

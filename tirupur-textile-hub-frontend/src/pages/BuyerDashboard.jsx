@@ -126,7 +126,11 @@ const BuyerDashboard = () => {
             </div>
             <div className="divide-y divide-slate-50">
               {activities.length > 0 ? activities.map((activity) => (
-                <div key={activity.id} className="px-8 py-5 flex items-center hover:bg-slate-50 transition-colors cursor-pointer group">
+                <Link 
+                  key={activity.id} 
+                  to={`/rfqs/${activity.id}`}
+                  className="px-8 py-5 flex items-center hover:bg-slate-50 transition-colors cursor-pointer group"
+                >
                   <div className={`w-12 h-12 rounded-xl bg-${activity.color}-50 flex items-center justify-center mr-4 group-hover:scale-110 transition-transform`}>
                     <span className={`material-symbols-outlined text-${activity.color}-600`}>{activity.icon}</span>
                   </div>
@@ -140,7 +144,7 @@ const BuyerDashboard = () => {
                       {activity.status}
                     </span>
                   </div>
-                </div>
+                </Link>
               )) : (
                 <EmptyState 
                   title="No Recent Activity" 

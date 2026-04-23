@@ -12,9 +12,8 @@ import ManufacturerDashboard from './pages/ManufacturerDashboard';
 import AddProductPage from './pages/AddProductPage';
 import MessagesPage from './pages/MessagesPage';
 import ServicesPage from './pages/ServicesPage';
-import Toast from './components/common/Toast';
-
-import LandingPage from './pages/LandingPage';
+import ProductDetailPage from './pages/ProductDetailPage';
+import RFQDetailPage from './pages/RFQDetailPage';
 
 function App() {
   return (
@@ -32,11 +31,13 @@ function App() {
             <Routes>
               <Route path="/home" element={<HomePage />} />
               <Route path="/products" element={<ProductListPage />} />
+              <Route path="/products/:id" element={<ProductDetailPage />} />
               <Route path="/products/add" element={<AddProductPage />} />
               <Route path="/manufacturers" element={<ManufacturerListPage />} />
               <Route path="/dashboard" element={<BuyerDashboard />} />
               <Route path="/dashboard/manufacturer" element={<ManufacturerDashboard />} />
               <Route path="/rfqs/create" element={<CreateRFQPage />} />
+              <Route path="/rfqs/:id" element={<RFQDetailPage />} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/messages" element={<MessagesPage />} />
               <Route path="*" element={<div className="flex items-center justify-center min-h-[60vh] text-2xl font-bold">404 - Page Not Found</div>} />
