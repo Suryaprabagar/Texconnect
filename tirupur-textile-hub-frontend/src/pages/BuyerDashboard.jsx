@@ -20,19 +20,19 @@ const BuyerDashboard = () => {
   return (
     <div className="space-y-10">
       {/* Welcome Header */}
-      <section className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+      <section className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
         <div>
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Welcome back, {user?.name?.split(' ')[0] || 'User'}</h2>
-          <p className="text-slate-500 text-lg mt-1 font-medium">Here's what's happening with your textile business today.</p>
+          <h2 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">Welcome back, {user?.name?.split(' ')[0] || 'User'}</h2>
+          <p className="text-slate-500 text-base lg:text-lg mt-1 font-medium">Here's what's happening with your business today.</p>
         </div>
-        <div className="flex items-center gap-3">
-          <Link to="/products" className="h-12 px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center shadow-sm text-sm">
-            <span className="material-symbols-outlined mr-2">explore</span>
-            Browse Products
+        <div className="flex flex-wrap items-center gap-2 lg:gap-3">
+          <Link to="/products" className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm text-xs lg:text-sm whitespace-nowrap">
+            <span className="material-symbols-outlined mr-2 text-xl">explore</span>
+            Marketplace
           </Link>
-          <Link to="/rfqs/create" className="h-12 px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center transform active:scale-95 text-sm">
-            <span className="material-symbols-outlined mr-2">add_circle</span>
-            Post Requirement
+          <Link to="/rfqs/create" className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center justify-center transform active:scale-95 text-xs lg:text-sm whitespace-nowrap">
+            <span className="material-symbols-outlined mr-2 text-xl">add_circle</span>
+            Post RFQ
           </Link>
         </div>
       </section>

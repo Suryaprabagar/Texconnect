@@ -13,11 +13,11 @@ const HomePage = () => {
             className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
             alt="Textile Hub Welcome"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-10">
-            <h1 className="text-4xl lg:text-5xl font-black text-white leading-tight tracking-tighter mb-4">
-              Tirupur's Largest B2B <br/> Textile Marketplace
+          <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent flex flex-col justify-end p-6 lg:p-10">
+            <h1 className="text-3xl lg:text-5xl font-black text-white leading-tight tracking-tighter mb-3 lg:mb-4">
+              Tirupur's Largest B2B <br className="hidden sm:block"/> Textile Marketplace
             </h1>
-            <p className="text-slate-200 text-lg max-w-xl mb-8 font-medium">
+            <p className="text-slate-200 text-sm lg:text-lg max-w-xl mb-6 lg:mb-8 font-medium">
               Source premium garments directly from certified manufacturers in India's knitwear hub.
             </p>
             <div className="flex gap-4">
@@ -82,10 +82,10 @@ const HomePage = () => {
       </section>
 
       {/* Why Choose Us */}
-      <section className="bg-white rounded-3xl p-10 border border-slate-50 shadow-soft">
-        <div className="text-center max-w-2xl mx-auto mb-12">
-          <h2 className="text-3xl font-black text-slate-900 tracking-tight">Built for Global Scale</h2>
-          <p className="text-slate-500 mt-4">We bridge the gap between global buyers and India's finest garment manufacturers with technology.</p>
+      <section className="bg-white rounded-3xl p-6 lg:p-10 border border-slate-50 shadow-soft">
+        <div className="text-center max-w-2xl mx-auto mb-8 lg:mb-12">
+          <h2 className="text-2xl lg:text-3xl font-black text-slate-900 tracking-tight">Built for Global Scale</h2>
+          <p className="text-slate-500 mt-3 text-sm lg:text-base">We bridge the gap between global buyers and India's finest garment manufacturers with technology.</p>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
