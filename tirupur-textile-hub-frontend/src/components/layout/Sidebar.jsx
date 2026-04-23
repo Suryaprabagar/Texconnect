@@ -1,15 +1,25 @@
-import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
 
 const Sidebar = () => {
   const location = useLocation();
+  const { user } = useAuthStore();
+  const isManufacturer = user?.role === 'manufacturer';
+  const isBuyer = user?.role === 'buyer' || !user;
 
-  const navItems = [
+  const navItems = isManufacturer ? [
+    { name: 'Home', path: '/home', icon: 'home' },
+    { name: 'Leads', path: '/dashboard/manufacturer', icon: 'ads_click' },
+    { name: 'My Products', path: '/products', icon: 'inventory' },
+    { name: 'Add Product', path: '/products/add', icon: 'add_circle' },
+    { name: 'Messages', path: '/messages', icon: 'chat' },
+  ] : [
     { name: 'Home', path: '/home', icon: 'home' },
     { name: 'Marketplace', path: '/products', icon: 'storefront' },
-    { name: 'Post Requirement', path: '/rfqs/create', icon: 'add_box' },
+    { name: 'Post RFQ', path: '/rfqs/create', icon: 'add_box' },
+    { name: 'Services', path: '/services', icon: 'settings_suggest' },
     { name: 'Messages', path: '/messages', icon: 'chat' },
-    { name: 'Profile', path: '/dashboard', icon: 'account_circle' },
+    { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
   ];
 
   return (
