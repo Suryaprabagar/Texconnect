@@ -64,10 +64,10 @@ const HomePage = () => {
         
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {[
-            { name: 'Knitted T-Shirts', icon: 'checkroom', slug: 'knitted' },
-            { name: 'Organic Fabrics', icon: 'eco', slug: 'organic' },
+            { name: 'Knitted T-Shirts', icon: 'checkroom', slug: 'tshirt' },
+            { name: 'Organic Fabrics', icon: 'eco', slug: 'other' },
             { name: 'Sportswear', icon: 'fitness_center', slug: 'sportswear' },
-            { name: 'Infant Wear', icon: 'child_care', slug: 'infant' },
+            { name: 'Infant Wear', icon: 'child_care', slug: 'kidswear' },
           ].map((cat) => (
             <Link 
               key={cat.name} 

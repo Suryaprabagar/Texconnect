@@ -40,11 +40,10 @@ const productSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 // Auto-generate slug from name
-productSchema.pre('save', function(next) {
+productSchema.pre('save', async function() {
   if (this.isModified('name')) {
     this.slug = this.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + Date.now();
   }
-  next();
 });
 
 // Text search index

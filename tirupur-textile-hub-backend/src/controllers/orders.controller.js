@@ -11,7 +11,7 @@ exports.createOrder = async (req, res, next) => {
     const order = await Order.create({
       ...req.body,
       orderNumber,
-      buyerId: req.user.id,
+      buyerId: req.user._id,
       timeline: [{ status: 'confirmed', note: 'Order placed' }]
     });
 
@@ -27,8 +27,8 @@ exports.createOrder = async (req, res, next) => {
 exports.getOrders = async (req, res, next) => {
   try {
     const filter = req.user.role === 'buyer' 
-      ? { buyerId: req.user.id } 
-      : { manufacturerId: req.user.id };
+      ? { buyerId: req.user._id } 
+      : { manufacturerId: req.user._id };
 
     const orders = await Order.find(filter).sort({ createdAt: -1 });
     return apiResponse(res, 200, true, 'Orders fetched', { orders });
@@ -48,12 +48,12 @@ exports.updateOrderStatus = async (req, res, next) => {
     if (!order) return apiResponse(res, 404, false, 'Order not found');
     
     // Check manufacturer authorization
-    if (order.manufacturerId.toString() !== req.user.id && req.user.role !== 'admin') {
+    if (order.manufacturerId.toString() !== req.user._id.toString() && req.user.role !== 'admin') {
       return apiResponse(res, 403, false, 'Not authorized to update this order');
     }
 
     order.status = status;
-    order.timeline.push({ status, note, updatedBy: req.user.id });
+    order.timeline.push({ status, note, updatedBy: req.user._id });
     await order.save();
 
     return apiResponse(res, 200, true, 'Order status updated', { order });
@@ -71,13 +71,13 @@ exports.submitReview = async (req, res, next) => {
     const order = await Order.findById(req.params.id);
 
     if (!order) return apiResponse(res, 404, false, 'Order not found');
-    if (order.buyerId.toString() !== req.user.id) {
+    if (order.buyerId.toString() !== req.user._id.toString()) {
       return apiResponse(res, 403, false, 'Only buyers can review their orders');
     }
 
     const review = await Review.create({
       orderId: order._id,
-      reviewerId: req.user.id,
+      reviewerId: req.user._id,
       revieweeId: order.manufacturerId,
       rating,
       title,

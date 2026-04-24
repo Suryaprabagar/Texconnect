@@ -89,7 +89,7 @@ exports.login = async (req, res, next) => {
 // @access  Private
 exports.getMe = async (req, res, next) => {
   try {
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     return apiResponse(res, 200, true, 'User data fetched', { user });
   } catch (error) {
     next(error);
@@ -102,7 +102,7 @@ exports.getMe = async (req, res, next) => {
 exports.logout = async (req, res, next) => {
   try {
     const token = req.body.refreshToken;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.user._id);
     
     // Remove refresh token from array
     user.refreshTokens = user.refreshTokens.filter(t => t !== token);

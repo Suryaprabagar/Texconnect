@@ -32,18 +32,18 @@ exports.getManufacturerProfile = async (req, res, next) => {
 // @access  Private (Manufacturer)
 exports.upsertManufacturerProfile = async (req, res, next) => {
   try {
-    let profile = await ManufacturerProfile.findOne({ userId: req.user.id });
+    let profile = await ManufacturerProfile.findOne({ userId: req.user._id });
 
     if (profile) {
       profile = await ManufacturerProfile.findOneAndUpdate(
-        { userId: req.user.id },
+        { userId: req.user._id },
         req.body,
         { new: true, runValidators: true }
       );
     } else {
       profile = await ManufacturerProfile.create({
         ...req.body,
-        userId: req.user.id
+        userId: req.user._id
       });
     }
 
@@ -58,7 +58,7 @@ exports.upsertManufacturerProfile = async (req, res, next) => {
 // @access  Private (Buyer)
 exports.getBuyerProfile = async (req, res, next) => {
   try {
-    const profile = await BuyerProfile.findOne({ userId: req.user.id });
+    const profile = await BuyerProfile.findOne({ userId: req.user._id });
     if (!profile) return apiResponse(res, 404, false, 'Buyer profile not found');
     return apiResponse(res, 200, true, 'Buyer profile fetched', { profile });
   } catch (error) {
@@ -71,18 +71,18 @@ exports.getBuyerProfile = async (req, res, next) => {
 // @access  Private (Buyer)
 exports.upsertBuyerProfile = async (req, res, next) => {
   try {
-    let profile = await BuyerProfile.findOne({ userId: req.user.id });
+    let profile = await BuyerProfile.findOne({ userId: req.user._id });
 
     if (profile) {
       profile = await BuyerProfile.findOneAndUpdate(
-        { userId: req.user.id },
+        { userId: req.user._id },
         req.body,
         { new: true, runValidators: true }
       );
     } else {
       profile = await BuyerProfile.create({
         ...req.body,
-        userId: req.user.id
+        userId: req.user._id
       });
     }
 

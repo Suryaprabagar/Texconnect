@@ -10,6 +10,7 @@ const BuyerDashboard = () => {
   const addToast = useToastStore((state) => state.addToast);
   const navigate = useNavigate();
   const [myRfqs, setMyRfqs] = useState([]);
+  const [rfqCount, setRfqCount] = useState(0);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

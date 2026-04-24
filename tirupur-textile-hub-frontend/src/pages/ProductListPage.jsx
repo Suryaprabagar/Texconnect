@@ -11,10 +11,11 @@ const ProductListPage = () => {
   const addToast = useToastStore((state) => state.addToast);
 
   const categories = [
-    { id: 'organic', name: 'Organic Cotton' },
-    { id: 'linen', name: 'Premium Linen' },
-    { id: 'polyester', name: 'Recycled Polyester' },
-    { id: 'silk', name: 'Silk Blend' },
+    { id: 'tshirt', name: 'T-Shirts' },
+    { id: 'hoodie', name: 'Hoodies' },
+    { id: 'polo', name: 'Polo Shirts' },
+    { id: 'sportswear', name: 'Sportswear' },
+    { id: 'kidswear', name: 'Kidswear' },
   ];
 
   const fetchProducts = async () => {
@@ -134,9 +135,23 @@ const ProductListPage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
-            {products.map(product => (
-              <ProductCard key={product._id} product={product} />
-            ))}
+            {products.length > 0 ? (
+              products.map(product => (
+                <ProductCard key={product._id} product={product} />
+              ))
+            ) : (
+              <div className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
+                <span className="material-symbols-outlined text-5xl text-slate-300 mb-4">inventory_2</span>
+                <h3 className="text-lg font-bold text-slate-900">No products found</h3>
+                <p className="text-slate-500 text-sm mt-1 max-w-xs">We couldn't find any products matching your criteria. Try clearing your filters or check back later.</p>
+                <button 
+                  onClick={() => setCategory('')}
+                  className="mt-6 px-6 py-2 bg-primary text-white font-bold rounded-xl text-xs"
+                >
+                  Clear All Filters
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

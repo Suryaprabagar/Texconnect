@@ -14,10 +14,12 @@ exports.createRFQ = async (req, res, next) => {
     const rfq = await RFQ.create({
       ...req.body,
       rfqNumber,
-      buyerId: req.user.id,
+      buyerId: req.user._id,
       expiryDate,
       status: 'open'
     });
+
+    console.log('RFQ created successfully:', { id: rfq._id, buyerId: rfq.buyerId });
 
     return apiResponse(res, 201, true, 'RFQ created successfully', { rfq });
   } catch (error) {
@@ -35,7 +37,7 @@ exports.getRFQs = async (req, res, next) => {
     // If user is authenticated and is a buyer, show their RFQs (including non-open ones if needed)
     // For now, let's just filter open ones for manufacturers, and own ones for buyers
     if (req.user && req.user.role === 'buyer') {
-      query = { buyerId: req.user.id };
+      query = { buyerId: req.user._id };
     }
 
     const rfqs = await RFQ.find(query).populate('buyerId', 'name').sort({ createdAt: -1 });
@@ -72,7 +74,7 @@ exports.submitQuote = async (req, res, next) => {
 
     const quote = await Quote.create({
       rfqId,
-      manufacturerId: req.user.id,
+      manufacturerId: req.user._id,
       buyerId: rfq.buyerId,
       pricePerUnit,
       quantity,
@@ -99,7 +101,7 @@ exports.getQuotesForRFQ = async (req, res, next) => {
     const rfq = await RFQ.findById(req.params.rfqId);
     if (!rfq) return apiResponse(res, 404, false, 'RFQ not found');
     
-    if (rfq.buyerId.toString() !== req.user.id) {
+    if (rfq.buyerId.toString() !== req.user._id.toString()) {
       return apiResponse(res, 403, false, 'Not authorized to view quotes for this RFQ');
     }
 
