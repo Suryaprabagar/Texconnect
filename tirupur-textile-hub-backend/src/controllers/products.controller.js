@@ -67,9 +67,10 @@ exports.getProduct = async (req, res, next) => {
 // @access  Private (Manufacturer)
 exports.getMyProducts = async (req, res, next) => {
   try {
-    console.log('Fetching products for userId:', req.user._id);
-    const products = await Product.find({ userId: req.user._id });
-    console.log(`Found ${products.length} products`);
+    const userId = req.user._id;
+    console.log('Fetching products for userId:', userId);
+    const products = await Product.find({ userId });
+    console.log(`Found ${products.length} products for user ${userId}`);
     return apiResponse(res, 200, true, 'Your products fetched', { products });
   } catch (error) {
     next(error);
@@ -81,12 +82,12 @@ exports.getMyProducts = async (req, res, next) => {
 // @access  Private (Manufacturer)
 exports.createProduct = async (req, res, next) => {
   try {
-    let manufacturerProfile = await ManufacturerProfile.findOne({ userId: req.user.id });
+    let manufacturerProfile = await ManufacturerProfile.findOne({ userId: req.user._id });
     
     // Auto-create a minimal profile if it doesn't exist to unblock the user
     if (!manufacturerProfile) {
       manufacturerProfile = await ManufacturerProfile.create({
-        userId: req.user.id,
+        userId: req.user._id,
         companyName: req.user.name + "'s Textile Company",
         description: 'Auto-generated profile for product listing.',
         isVerified: false
@@ -102,11 +103,15 @@ exports.createProduct = async (req, res, next) => {
       ...req.body,
       images: imageUrls.length > 0 ? imageUrls : req.body.images,
       status: 'active', // Set to active by default so it shows in the list
-      userId: req.user.id,
+      userId: req.user._id,
       manufacturerId: manufacturerProfile._id
     });
     
-    console.log('Product created with userId:', product.userId);
+    console.log('Product created successfully:', {
+      id: product._id,
+      userId: product.userId,
+      manufacturerId: product.manufacturerId
+    });
     return apiResponse(res, 201, true, 'Product created successfully', { product });
   } catch (error) {
     next(error);
@@ -122,7 +127,7 @@ exports.updateProduct = async (req, res, next) => {
     if (!product) return apiResponse(res, 404, false, 'Product not found');
 
     // Check ownership
-    if (product.userId.toString() !== req.user.id) {
+    if (product.userId.toString() !== req.user._id.toString()) {
       return apiResponse(res, 403, false, 'Not authorized to update this product');
     }
 
@@ -154,7 +159,7 @@ exports.deleteProduct = async (req, res, next) => {
     const product = await Product.findById(req.params.id);
     if (!product) return apiResponse(res, 404, false, 'Product not found');
 
-    if (product.userId.toString() !== req.user.id) {
+    if (product.userId.toString() !== req.user._id.toString()) {
       return apiResponse(res, 403, false, 'Not authorized to delete this product');
     }
 

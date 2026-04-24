@@ -11,14 +11,14 @@ exports.getOrCreateConversation = async (req, res, next) => {
     
     // Find existing conversation
     let conversation = await Conversation.findOne({
-      participants: { $all: [req.user.id, recipientId] },
+      participants: { $all: [req.user._id, recipientId] },
       rfqId,
       productId
     });
 
     if (!conversation) {
       conversation = await Conversation.create({
-        participants: [req.user.id, recipientId],
+        participants: [req.user._id, recipientId],
         subject,
         rfqId,
         productId
@@ -37,7 +37,7 @@ exports.getOrCreateConversation = async (req, res, next) => {
 exports.getConversations = async (req, res, next) => {
   try {
     const conversations = await Conversation.find({
-      participants: { $in: [req.user.id] }
+      participants: { $in: [req.user._id] }
     }).populate('participants', 'name email').sort({ lastMessageAt: -1 });
 
     return apiResponse(res, 200, true, 'Conversations fetched', { conversations });
@@ -57,13 +57,13 @@ exports.sendMessage = async (req, res, next) => {
     const conversation = await Conversation.findById(conversationId);
     if (!conversation) return apiResponse(res, 404, false, 'Conversation not found');
 
-    if (!conversation.participants.some(p => p.toString() === req.user.id)) {
+    if (!conversation.participants.some(p => p.toString() === req.user._id.toString())) {
       return apiResponse(res, 403, false, 'Not authorized to send message in this conversation');
     }
 
     const message = await Message.create({
       conversationId,
-      senderId: req.user.id,
+      senderId: req.user._id,
       content,
       type: type || 'text',
       metadata
@@ -88,7 +88,7 @@ exports.getMessages = async (req, res, next) => {
     const conversation = await Conversation.findById(req.params.id);
     if (!conversation) return apiResponse(res, 404, false, 'Conversation not found');
 
-    if (!conversation.participants.some(p => p.toString() === req.user.id)) {
+    if (!conversation.participants.some(p => p.toString() === req.user._id.toString())) {
       return apiResponse(res, 403, false, 'Not authorized to view messages in this conversation');
     }
 
