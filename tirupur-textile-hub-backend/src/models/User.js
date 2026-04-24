@@ -60,6 +60,10 @@ userSchema.pre('save', async function () {
 
 // Match user entered password to hashed password in database
 userSchema.methods.matchPassword = async function (enteredPassword) {
+  if (!this.passwordHash) {
+    console.error('matchPassword called but passwordHash is missing in document');
+    return false;
+  }
   return await bcrypt.compare(enteredPassword, this.passwordHash);
 };
 
