@@ -12,6 +12,7 @@ exports.register = async (req, res, next) => {
     // Check if user exists
     const userExists = await User.findOne({ email });
     if (userExists) {
+      console.log('Registration failed: User already exists -', email);
       return apiResponse(res, 400, false, 'User already exists');
     }
 
@@ -52,15 +53,24 @@ exports.login = async (req, res, next) => {
     const { email, password } = req.body;
 
     // Check for user
+    console.log('Login attempt for email:', email);
     const user = await User.findOne({ email }).select('+passwordHash');
     if (!user) {
+      console.log('User not found:', email);
       return apiResponse(res, 401, false, 'Invalid credentials');
     }
 
     // Check if password matches
     const isMatch = await user.matchPassword(password);
+    console.log('Password match result for', email, ':', isMatch);
     if (!isMatch) {
       return apiResponse(res, 401, false, 'Invalid credentials');
+    }
+
+    // Check account status
+    if (user.status !== 'active') {
+      console.log('Login blocked: Account status is', user.status, '-', email);
+      return apiResponse(res, 401, false, `Your account is ${user.status}. Please contact support.`);
     }
 
     const { accessToken, refreshToken } = generateTokens(user._id, user.role);
