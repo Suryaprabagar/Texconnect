@@ -7,7 +7,9 @@ const ProductListPage = () => {
   const [products, setProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [category, setCategory] = useState('');
-  const [sortBy, setSortBy] = useState('Popularity');
+  const [search, setSearch] = useState('');
+  const [gsmFilter, setGsmFilter] = useState('');
+  const [sortBy, setSortBy] = useState('Sort by: Popularity');
   const addToast = useToastStore((state) => state.addToast);
 
   const categories = [
@@ -18,16 +20,41 @@ const ProductListPage = () => {
     { id: 'kidswear', name: 'Kidswear' },
   ];
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (term = '', cat = '', gsm = '', sortVal = '') => {
     setIsLoading(true);
     try {
-      const response = await axios.get('/products', {
-        params: { category }
-      });
+      const params = {};
+      if (cat) params.category = cat;
+      if (term) params.q = term;
+      
+      if (gsm) {
+        if (gsm === 'Under 100') {
+          params.minGSM = 0;
+          params.maxGSM = 100;
+        } else if (gsm === '100 - 200') {
+          params.minGSM = 100;
+          params.maxGSM = 200;
+        } else if (gsm === '200 - 300') {
+          params.minGSM = 200;
+          params.maxGSM = 300;
+        } else if (gsm === '300+') {
+          params.minGSM = 300;
+          params.maxGSM = 9999;
+        }
+      }
+      
+      if (sortVal === 'Price: Low to High') {
+        params.sortBy = 'price_asc';
+      } else if (sortVal === 'Price: High to Low') {
+        params.sortBy = 'price_desc';
+      } else {
+        params.sortBy = 'popular';
+      }
+
+      const response = await axios.get('/products', { params });
       setProducts(response.data.data.products);
     } catch (error) {
       console.error('Error fetching products:', error);
-      // No mock products as requested
       setProducts([]);
     } finally {
       setIsLoading(false);
@@ -38,19 +65,26 @@ const ProductListPage = () => {
     const value = e.target.value;
     setSortBy(value);
     addToast(`Sorting by: ${value}`, 'info');
-    
-    // Simple sort for demo
-    const sorted = [...products].sort((a, b) => {
-      if (value === 'Price: Low to High') return a.pricePerUnit - b.pricePerUnit;
-      if (value === 'Price: High to Low') return b.pricePerUnit - a.pricePerUnit;
-      return 0;
-    });
-    setProducts(sorted);
+  };
+
+  const handleDeleteProduct = (productId) => {
+    setProducts(prev => prev.filter(p => p._id !== productId));
+  };
+
+  const handleClearAll = () => {
+    setCategory('');
+    setGsmFilter('');
+    setSearch('');
+    setSortBy('Sort by: Popularity');
   };
 
   useEffect(() => {
-    fetchProducts();
-  }, [category]);
+    const delayDebounceFn = setTimeout(() => {
+      fetchProducts(search, category, gsmFilter, sortBy);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search, category, gsmFilter, sortBy]);
 
   return (
     <div className="flex gap-8">
@@ -59,11 +93,11 @@ const ProductListPage = () => {
         <div>
           <h3 className="text-sm font-bold text-slate-900 mb-4 flex items-center justify-between">
             Filters
-            <button className="text-primary text-xs font-bold" onClick={() => setCategory('')}>Clear All</button>
+            <button className="text-primary text-xs font-bold" onClick={handleClearAll}>Clear All</button>
           </h3>
           
           <div className="space-y-3 mb-8">
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Fabric Type</p>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Categories</p>
             <div className="space-y-2">
               {categories.map((cat) => (
                 <label key={cat.id} className="flex items-center gap-3 cursor-pointer group">
@@ -71,7 +105,7 @@ const ProductListPage = () => {
                     type="checkbox" 
                     className="w-4 h-4 rounded border-slate-300 text-primary focus:ring-primary"
                     checked={category === cat.id}
-                    onChange={() => setCategory(cat.id)}
+                    onChange={() => setCategory(category === cat.id ? '' : cat.id)}
                   />
                   <span className="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">{cat.name}</span>
                 </label>
@@ -85,8 +119,12 @@ const ProductListPage = () => {
               {['Under 100', '100 - 200', '200 - 300', '300+'].map(gsm => (
                 <button 
                   key={gsm} 
-                  onClick={() => addToast(`Filtering by GSM: ${gsm}`, 'info')}
-                  className="px-3 py-1.5 rounded-lg border border-slate-200 text-[10px] font-bold hover:border-primary hover:text-primary transition-all active:scale-95"
+                  onClick={() => setGsmFilter(gsmFilter === gsm ? '' : gsm)}
+                  className={`px-3 py-1.5 rounded-lg border text-[10px] font-bold transition-all active:scale-95 ${
+                    gsmFilter === gsm
+                      ? 'bg-primary border-primary text-white shadow-sm'
+                      : 'border-slate-200 text-slate-500 hover:border-primary hover:text-primary'
+                  }`}
                 >
                   {gsm}
                 </button>
@@ -109,12 +147,19 @@ const ProductListPage = () => {
 
       {/* Main Content */}
       <div className="flex-1">
-        <div className="flex items-center justify-between mb-8">
+        <div className="flex flex-col md:flex-row md:items-center justify-between mb-8 gap-4">
           <div>
             <h2 className="text-2xl font-bold text-on-surface">Browse Inventory</h2>
             <p className="text-sm text-slate-500 mt-1">Showing {products.length} premium textile results</p>
           </div>
-          <div className="flex gap-3">
+          <div className="flex flex-col sm:flex-row gap-3 w-full md:w-auto">
+            <input 
+              type="text"
+              placeholder="Search products..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="px-4 py-2 bg-white border border-slate-200 rounded-xl text-xs font-medium focus:ring-2 focus:ring-primary outline-none w-full sm:w-60"
+            />
             <select 
               value={sortBy}
               onChange={handleSort}
@@ -137,7 +182,7 @@ const ProductListPage = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-6">
             {products.length > 0 ? (
               products.map(product => (
-                <ProductCard key={product._id} product={product} />
+                <ProductCard key={product._id} product={product} onDelete={handleDeleteProduct} />
               ))
             ) : (
               <div className="col-span-full py-20 flex flex-col items-center justify-center text-center bg-slate-50 rounded-3xl border border-dashed border-slate-200">
@@ -145,7 +190,7 @@ const ProductListPage = () => {
                 <h3 className="text-lg font-bold text-slate-900">No products found</h3>
                 <p className="text-slate-500 text-sm mt-1 max-w-xs">We couldn't find any products matching your criteria. Try clearing your filters or check back later.</p>
                 <button 
-                  onClick={() => setCategory('')}
+                  onClick={handleClearAll}
                   className="mt-6 px-6 py-2 bg-primary text-white font-bold rounded-xl text-xs"
                 >
                   Clear All Filters

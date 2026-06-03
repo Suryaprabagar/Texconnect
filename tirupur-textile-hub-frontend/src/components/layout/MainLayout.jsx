@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
+import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 import BottomNav from './BottomNav';
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -17,7 +18,7 @@ const MainLayout = ({ children }) => {
       <TopBar onMenuClick={toggleMobileMenu} />
       
       <main className="lg:ml-64 pt-20 lg:pt-24 pb-24 lg:pb-12 px-4 lg:px-8">
-        {children}
+        <Outlet />
       </main>
 
       {/* Mobile Bottom Nav */}

@@ -7,7 +7,16 @@ const { apiResponse } = require('../utils/apiResponse');
 // @access  Public
 exports.getManufacturers = async (req, res, next) => {
   try {
-    const manufacturers = await ManufacturerProfile.find({ isVerified: true });
+    const { q } = req.query;
+    let filter = { isVerified: true };
+    if (q) {
+      filter.$or = [
+        { companyName: new RegExp(q, 'i') },
+        { specializations: new RegExp(q, 'i') },
+        { description: new RegExp(q, 'i') }
+      ];
+    }
+    const manufacturers = await ManufacturerProfile.find(filter);
     return apiResponse(res, 200, true, 'Manufacturers fetched', { manufacturers });
   } catch (error) {
     next(error);

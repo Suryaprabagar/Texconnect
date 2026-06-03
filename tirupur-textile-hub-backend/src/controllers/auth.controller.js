@@ -7,7 +7,8 @@ const { apiResponse } = require('../utils/apiResponse');
 // @access  Public
 exports.register = async (req, res, next) => {
   try {
-    const { name, email, password, role } = req.body;
+    let { name, email, password, role } = req.body;
+    email = email.toLowerCase();
 
     // Check if user exists
     const userExists = await User.findOne({ email });
@@ -50,7 +51,8 @@ exports.register = async (req, res, next) => {
 // @access  Public
 exports.login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    let { email, password } = req.body;
+    email = email.toLowerCase();
 
     // Check for user
     console.log('Login attempt for email:', email);

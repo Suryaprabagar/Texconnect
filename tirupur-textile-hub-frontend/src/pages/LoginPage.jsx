@@ -20,7 +20,10 @@ const LoginPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('/auth/login', { email, password });
+      const response = await axios.post('/auth/login', { 
+        email: email.toLowerCase().trim(), 
+        password 
+      });
       const { user, accessToken, refreshToken } = response.data.data;
       
       setAuth(user, accessToken, refreshToken);
@@ -33,7 +36,7 @@ const LoginPage = () => {
       if (user.role === 'manufacturer') {
         navigate('/dashboard/manufacturer');
       } else {
-        navigate('/home');
+        navigate('/dashboard');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Login failed. Please check your credentials.');

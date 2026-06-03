@@ -8,18 +8,16 @@ const Sidebar = ({ isOpen, onClose }) => {
   const isManufacturer = user?.role === 'manufacturer';
 
   const navItems = isManufacturer ? [
-    { name: 'Home', path: '/home', icon: 'home' },
-    { name: 'Leads', path: '/dashboard/manufacturer', icon: 'ads_click' },
+    { name: 'Dashboard', path: '/dashboard/manufacturer', icon: 'dashboard' },
     { name: 'My Products', path: '/products', icon: 'inventory' },
     { name: 'Add Product', path: '/products/add', icon: 'add_circle' },
-    { name: 'Messages', path: '/messages', icon: 'chat' },
+    { name: 'Chat', path: '/messages', icon: 'chat' },
   ] : [
-    { name: 'Home', path: '/home', icon: 'home' },
+    { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
     { name: 'Marketplace', path: '/products', icon: 'storefront' },
     { name: 'Post RFQ', path: '/rfqs/create', icon: 'add_box' },
     { name: 'Services', path: '/services', icon: 'settings_suggest' },
-    { name: 'Messages', path: '/messages', icon: 'chat' },
-    { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
+    { name: 'Chat', path: '/messages', icon: 'chat' },
   ];
 
   const sidebarContent = (

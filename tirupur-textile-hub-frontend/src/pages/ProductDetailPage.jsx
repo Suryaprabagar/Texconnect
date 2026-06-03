@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from '../api/axios';
 import { useToastStore } from '../store/toastStore';
 
@@ -7,6 +7,7 @@ const ProductDetailPage = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
   const addToast = useToastStore((state) => state.addToast);
 
   useEffect(() => {
@@ -126,13 +127,19 @@ const ProductDetailPage = () => {
               <span className="material-symbols-outlined">request_quote</span>
               REQUEST A QUOTE
             </button>
-            <Link 
-              to="/messages"
+            <button 
+              onClick={() => navigate('/messages', { 
+                state: { 
+                  recipientId: product.userId, 
+                  subject: `Inquiry about ${product.name}`,
+                  productId: product._id
+                } 
+              })}
               className="w-full py-5 bg-white border border-slate-200 text-slate-900 font-black rounded-2xl hover:bg-slate-50 transition-all flex items-center justify-center gap-3"
             >
               <span className="material-symbols-outlined">chat</span>
               CHAT WITH MANUFACTURER
-            </Link>
+            </button>
           </div>
 
           <div className="border-t border-slate-100 pt-8">

@@ -91,7 +91,7 @@ const BuyerDashboard = () => {
             </div>
             <span className="w-2 h-2 bg-error rounded-full animate-pulse"></span>
           </div>
-          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Unread Messages</p>
+          <p className="text-slate-500 text-xs font-bold uppercase tracking-wider mb-1">Unread Chats</p>
           <div className="flex items-baseline gap-2">
             <h3 className="text-4xl font-black text-slate-900">0</h3>
             <span className="text-xs text-slate-400 font-medium">New alerts</span>
@@ -149,7 +149,7 @@ const BuyerDashboard = () => {
               )) : (
                 <EmptyState 
                   title="No Recent Activity" 
-                  description="Your recent actions, orders, and messages will appear here." 
+                  description="Your recent actions, orders, and chats will appear here." 
                   icon="history"
                   actionText="Post an RFQ"
                   actionLink="/rfqs/create"
@@ -161,75 +161,6 @@ const BuyerDashboard = () => {
 
         {/* Side Panel */}
         <aside className="space-y-8">
-          <div className="bg-primary p-6 rounded-3xl shadow-xl text-white relative overflow-hidden">
-            <div className="relative z-10">
-              <h3 className="text-xl font-bold mb-2">Market Insight</h3>
-              <p className="text-indigo-100 text-sm mb-6 leading-relaxed">
-                Cotton prices are expected to drop by 4% next week. Plan your procurement accordingly.
-              </p>
-              <button 
-                onClick={() => addToast('Market analysis tool coming soon!', 'info')}
-                className="w-full bg-white text-primary font-bold py-3 rounded-xl hover:bg-slate-50 transition-colors text-xs uppercase tracking-widest"
-              >
-                Analyze Prices
-              </button>
-            </div>
-            <div className="absolute -right-10 -bottom-10 w-40 h-40 bg-white/10 rounded-full blur-3xl"></div>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
-            <h3 className="text-xs font-black text-slate-900 mb-6 uppercase tracking-widest">Top Suppliers</h3>
-            <div className="space-y-4">
-              {[
-                { name: 'Tex India Pvt Ltd', rating: '4.9', icon: 'factory' },
-                { name: 'Suryaprabagar Knits', rating: '4.8', icon: 'precision_manufacturing' },
-                { name: 'EcoWeave Fabrics', rating: '4.7', icon: 'tsunami' },
-              ].map((supplier) => (
-                <div key={supplier.name} className="flex items-center justify-between group cursor-pointer">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center border border-slate-100">
-                      <span className="material-symbols-outlined text-slate-400 text-xl group-hover:text-primary transition-colors">{supplier.icon}</span>
-                    </div>
-                    <div>
-                      <p className="text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">{supplier.name}</p>
-                      <div className="flex items-center gap-1">
-                        <span className="material-symbols-outlined text-orange-400 text-[10px]">star</span>
-                        <span className="text-[10px] font-bold text-slate-400">{supplier.rating}</span>
-                      </div>
-                    </div>
-                  </div>
-                  <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-                </div>
-              ))}
-            </div>
-            <Link to="/manufacturers" className="w-full mt-6 flex items-center justify-center py-3 bg-slate-50 text-slate-500 font-bold rounded-xl text-[10px] uppercase tracking-widest hover:bg-slate-100 transition-all">
-              Find More Suppliers
-            </Link>
-          </div>
-
-          <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
-            <h3 className="text-xs font-black text-slate-900 mb-6 uppercase tracking-widest">Live Categories</h3>
-            <div className="space-y-4">
-              {[
-                { name: 'Premium Cotton', img: 'https://images.unsplash.com/photo-1558278226-9fa105821c7a?auto=format&fit=crop&q=80&w=100' },
-                { name: 'Organic Linen', img: 'https://images.unsplash.com/photo-1590736704728-f4730bb30770?auto=format&fit=crop&q=80&w=100' },
-                { name: 'Bamboo Silk', img: 'https://images.unsplash.com/photo-1618220179428-22790b461013?auto=format&fit=crop&q=80&w=100' },
-              ].map((item) => (
-                <Link 
-                  key={item.name} 
-                  to={`/products?category=${item.name.toLowerCase().split(' ')[0]}`}
-                  className="flex items-center group cursor-pointer"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-slate-100 mr-3 overflow-hidden border border-slate-100">
-                    <img src={item.img} className="w-full h-full object-cover group-hover:scale-110 transition-transform" alt={item.name} />
-                  </div>
-                  <span className="flex-1 text-sm font-bold text-slate-700 group-hover:text-primary transition-colors">{item.name}</span>
-                  <span className="material-symbols-outlined text-slate-300 group-hover:translate-x-1 transition-transform">chevron_right</span>
-                </Link>
-              ))}
-            </div>
-          </div>
-
           <div className="bg-white p-6 rounded-3xl shadow-soft border border-slate-50">
             <h3 className="text-xs font-black text-slate-900 mb-6 uppercase tracking-widest">Account</h3>
             <button 
