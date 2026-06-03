@@ -48,6 +48,26 @@ const ManufacturerDashboard = () => {
     navigate('/login');
   };
 
+  const handleDeleteProduct = async (productId) => {
+    if (!window.confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/products/${productId}`);
+      addToast('Product deleted successfully', 'success');
+      
+      setMyProducts(prev => prev.filter(p => p._id !== productId));
+      setStats(prev => ({
+        ...prev,
+        products: prev.products - 1
+      }));
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      addToast(error.response?.data?.message || 'Failed to delete product', 'error');
+    }
+  };
+
   return (
     <div className="space-y-10">
       {/* Header */}
@@ -63,14 +83,6 @@ const ManufacturerDashboard = () => {
           <p className="text-slate-500 text-base lg:text-lg font-medium">Managing: <span className="text-primary">{user?.name || 'Your Factory'}</span></p>
         </div>
         <div className="flex flex-wrap items-center gap-2 lg:gap-3">
-          <Link 
-            to="/dashboard/manufacturer" 
-            onClick={() => addToast('Inventory management coming soon!', 'info')}
-            className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-white border border-slate-200 text-slate-900 font-bold rounded-xl hover:bg-slate-50 transition-all flex items-center justify-center shadow-sm text-xs lg:text-sm whitespace-nowrap"
-          >
-            <span className="material-symbols-outlined mr-2 text-xl">inventory_2</span>
-            Inventory
-          </Link>
           <Link to="/products/add" className="flex-1 lg:flex-none h-11 lg:h-12 px-4 lg:px-6 bg-primary text-white font-bold rounded-xl hover:shadow-lg transition-all flex items-center justify-center transform active:scale-95 text-xs lg:text-sm whitespace-nowrap">
             <span className="material-symbols-outlined mr-2 text-xl">add_circle</span>
             Add Product
@@ -121,20 +133,38 @@ const ManufacturerDashboard = () => {
         </div>
       </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Performance */}
-        <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
-          <h3 className="text-xl font-black text-slate-900 mb-6 flex items-center">
-            <span className="material-symbols-outlined mr-2 text-primary">trending_up</span>
-            Performance Overview
-          </h3>
-          <div className="aspect-video bg-slate-50 rounded-2xl border border-dashed border-slate-200 flex items-center justify-center">
-            <p className="text-slate-400 font-bold text-sm uppercase tracking-widest">Analytics Dashboard Coming Soon</p>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Company Details */}
+        <section className="lg:col-span-1 bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
+          <h3 className="text-xl font-black text-slate-900 mb-6">Company Profile</h3>
+          <div className="space-y-6">
+            <div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Production Capacity</p>
+              <p className="text-sm font-bold text-slate-700">50,000 units / month</p>
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Certifications</p>
+              <div className="flex flex-wrap gap-2">
+                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">GOTS Certified</span>
+                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">ISO 9001</span>
+                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">OEKO-TEX</span>
+              </div>
+            </div>
+            <div>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Location</p>
+              <p className="text-sm font-bold text-slate-700 flex items-center gap-1">
+                <span className="material-symbols-outlined text-xs">location_on</span>
+                Tirupur, Tamil Nadu
+              </p>
+            </div>
+            <button className="w-full py-3 border border-primary text-primary font-bold rounded-xl text-xs hover:bg-primary/5 transition-all">
+              Edit Profile Details
+            </button>
           </div>
         </section>
 
         {/* Quick Actions */}
-        <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
+        <section className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
           <h3 className="text-xl font-black text-slate-900 mb-6">Quick Actions</h3>
             <div className="space-y-4">
               {isLoading ? (
@@ -180,70 +210,49 @@ const ManufacturerDashboard = () => {
         </section>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Company Details */}
-        <section className="lg:col-span-1 bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
-          <h3 className="text-xl font-black text-slate-900 mb-6">Company Profile</h3>
-          <div className="space-y-6">
-            <div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Production Capacity</p>
-              <p className="text-sm font-bold text-slate-700">50,000 units / month</p>
-            </div>
-            <div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Certifications</p>
-              <div className="flex flex-wrap gap-2">
-                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">GOTS Certified</span>
-                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">ISO 9001</span>
-                <span className="px-2 py-1 bg-slate-50 border border-slate-100 rounded text-[10px] font-bold text-slate-600">OEKO-TEX</span>
-              </div>
-            </div>
-            <div>
-              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Location</p>
-              <p className="text-sm font-bold text-slate-700 flex items-center gap-1">
-                <span className="material-symbols-outlined text-xs">location_on</span>
-                Tirupur, Tamil Nadu
-              </p>
-            </div>
-            <button className="w-full py-3 border border-primary text-primary font-bold rounded-xl text-xs hover:bg-primary/5 transition-all">
-              Edit Profile Details
-            </button>
-          </div>
-        </section>
-
-        {/* Product Catalog */}
-        <section className="lg:col-span-2 bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
-          <div className="flex justify-between items-center mb-6">
-            <h3 className="text-xl font-black text-slate-900">Your Catalog</h3>
-            <Link to="/products" className="text-xs font-bold text-primary hover:underline">View All</Link>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
-            {isLoading ? (
-              [1, 2, 3].map(i => <div key={i} className="aspect-square bg-slate-50 animate-pulse rounded-2xl"></div>)
-            ) : stats.products > 0 ? (
-              myProducts.map((product) => (
-                <div key={product._id} className="group">
-                  <div className="aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-2 relative">
-                    <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200'} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                    <div className="absolute top-2 right-2">
-                      <span className="bg-white/90 backdrop-blur shadow-sm px-2 py-1 rounded-lg text-[10px] font-black text-primary">₹{product.pricePerUnit}</span>
-                    </div>
+      {/* Product Catalog */}
+      <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">
+        <div className="flex justify-between items-center mb-6">
+          <h3 className="text-xl font-black text-slate-900">Your Catalog</h3>
+          <Link to="/products" className="text-xs font-bold text-primary hover:underline">View All</Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {isLoading ? (
+            [1, 2, 3].map(i => <div key={i} className="aspect-square bg-slate-50 animate-pulse rounded-2xl"></div>)
+          ) : stats.products > 0 ? (
+            myProducts.map((product) => (
+              <div key={product._id} className="group">
+                <div className="aspect-square bg-slate-50 rounded-2xl overflow-hidden mb-2 relative">
+                  <img src={product.images?.[0] || 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&q=80&w=200'} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <div className="absolute top-2 right-2">
+                    <span className="bg-white/90 backdrop-blur shadow-sm px-2 py-1 rounded-lg text-[10px] font-black text-primary">₹{product.pricePerUnit}</span>
                   </div>
-                  <p className="text-[11px] font-bold text-slate-900 truncate">{product.name}</p>
+                    {/* Hover Overlay with Edit button */}
+                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      <Link 
+                        to={`/products/edit/${product._id}`}
+                        className="bg-white text-slate-900 p-2 rounded-full hover:bg-slate-100 shadow transition-all transform hover:scale-110"
+                        title="Edit Product"
+                      >
+                        <span className="material-symbols-outlined text-sm block">edit</span>
+                      </Link>
+                    </div>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-full py-10 flex flex-col items-center justify-center text-center">
-                <span className="material-symbols-outlined text-slate-200 text-4xl mb-2">inventory_2</span>
-                <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No products listed</p>
+                <p className="text-[11px] font-bold text-slate-900 truncate">{product.name}</p>
               </div>
-            )}
-            <Link to="/products/add" className="aspect-square border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-primary/30 hover:bg-primary/5 transition-all group">
-              <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">add_circle</span>
-              <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary transition-colors uppercase tracking-widest">Add New</span>
-            </Link>
-          </div>
-        </section>
-      </div>
+            ))
+          ) : (
+            <div className="col-span-full py-10 flex flex-col items-center justify-center text-center">
+              <span className="material-symbols-outlined text-slate-200 text-4xl mb-2">inventory_2</span>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No products listed</p>
+            </div>
+          )}
+          <Link to="/products/add" className="aspect-square border-2 border-dashed border-slate-100 rounded-2xl flex flex-col items-center justify-center gap-2 hover:border-primary/30 hover:bg-primary/5 transition-all group">
+            <span className="material-symbols-outlined text-slate-300 group-hover:text-primary transition-colors">add_circle</span>
+            <span className="text-[10px] font-bold text-slate-400 group-hover:text-primary transition-colors uppercase tracking-widest">Add New</span>
+          </Link>
+        </div>
+      </section>
 
       {/* Ratings & Reviews */}
       <section className="bg-white p-8 rounded-3xl shadow-soft border border-slate-50">

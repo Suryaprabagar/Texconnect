@@ -1,16 +1,42 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useToastStore } from '../../store/toastStore';
+import { useAuthStore } from '../../store/authStore';
+import axios from '../../api/axios';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, onDelete }) => {
   const [isFavorited, setIsFavorited] = useState(false);
   const addToast = useToastStore((state) => state.addToast);
+  const { user } = useAuthStore();
+
+  const isOwner = user && (product.userId?._id || product.userId) && (user.id || user._id) && (
+    (product.userId?._id || product.userId).toString() === (user.id || user._id).toString()
+  );
 
   const toggleFavorite = (e) => {
     e.preventDefault();
     e.stopPropagation();
     setIsFavorited(!isFavorited);
     addToast(isFavorited ? 'Removed from favorites' : 'Added to favorites', 'success');
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!window.confirm('Are you sure you want to delete this product?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(`/products/${product._id}`);
+      addToast('Product deleted successfully', 'success');
+      if (onDelete) {
+        onDelete(product._id);
+      }
+    } catch (error) {
+      console.error('Error deleting product:', error);
+      addToast('Failed to delete product', 'error');
+    }
   };
 
   return (
@@ -26,14 +52,34 @@ const ProductCard = ({ product }) => {
             {product.category || 'Apparel'}
           </span>
         </div>
-        <button 
-          onClick={toggleFavorite}
-          className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
-            isFavorited ? 'bg-red-500 text-white shadow-lg' : 'bg-white/90 backdrop-blur text-slate-400 hover:text-red-500'
-          }`}
-        >
-          <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: isFavorited ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
-        </button>
+        {isOwner ? (
+          <div className="absolute top-4 right-4 flex gap-2">
+            <Link 
+              to={`/products/edit/${product._id}`}
+              onClick={(e) => e.stopPropagation()}
+              className="w-8 h-8 rounded-full bg-white/95 backdrop-blur text-slate-700 hover:text-primary hover:bg-white flex items-center justify-center shadow-md transition-all transform hover:scale-110"
+              title="Edit Product"
+            >
+              <span className="material-symbols-outlined text-[16px]">edit</span>
+            </Link>
+            <button 
+              onClick={handleDelete}
+              className="w-8 h-8 rounded-full bg-white/95 backdrop-blur text-red-500 hover:bg-red-50 flex items-center justify-center shadow-md transition-all transform hover:scale-110 cursor-pointer"
+              title="Delete Product"
+            >
+              <span className="material-symbols-outlined text-[16px]">delete</span>
+            </button>
+          </div>
+        ) : (
+          <button 
+            onClick={toggleFavorite}
+            className={`absolute top-4 right-4 w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+              isFavorited ? 'bg-red-500 text-white shadow-lg' : 'bg-white/90 backdrop-blur text-slate-400 hover:text-red-500'
+            }`}
+          >
+            <span className="material-symbols-outlined text-lg" style={{ fontVariationSettings: isFavorited ? "'FILL' 1" : "'FILL' 0" }}>favorite</span>
+          </button>
+        )}
       </div>
       
       <div className="p-5 flex-1 flex flex-col">

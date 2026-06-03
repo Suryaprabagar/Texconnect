@@ -15,9 +15,7 @@ app.use(express.json());
 app.use(cors());
 
 // Logging middleware
-if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
-}
+app.use(morgan('dev'));
 
 // Basic route
 app.get('/', (req, res) => {

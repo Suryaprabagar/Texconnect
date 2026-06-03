@@ -67,6 +67,31 @@ const RFQDetailPage = () => {
     }
   };
 
+  const handleAcceptQuote = async (quote) => {
+    setIsLoading(true);
+    try {
+      await axios.post('/orders', {
+        manufacturerId: quote.manufacturerId?._id || quote.manufacturerId,
+        rfqId: rfq._id,
+        quoteId: quote._id,
+        productId: rfq.productId,
+        quantity: quote.quantity,
+        pricePerUnit: quote.pricePerUnit,
+        totalAmount: quote.totalAmount,
+        deliveryAddress: {
+          street: rfq.deliveryAddress || 'Tirupur Sourcing Hub Default Address'
+        }
+      });
+      addToast('Quote accepted! Order has been placed successfully.', 'success');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error accepting quote:', error);
+      addToast('Failed to accept quote. Please try again.', 'error');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[60vh]">
@@ -177,8 +202,28 @@ const RFQDetailPage = () => {
                       <div>
                         <p className="font-bold text-slate-900">{quote.manufacturerId?.name}</p>
                         <p className="text-xs text-slate-500 mt-1">₹{quote.pricePerUnit}/unit • Total: ₹{quote.totalAmount}</p>
+                        {quote.message && <p className="text-xs text-slate-600 mt-2 bg-slate-50 p-2 rounded-lg italic">"{quote.message}"</p>}
                       </div>
-                      <Link to="/messages" className="px-4 py-2 bg-slate-900 text-white text-[10px] font-bold rounded-lg">CONTACT</Link>
+                      <div className="flex gap-2">
+                        <button 
+                          onClick={() => navigate('/messages', { 
+                            state: { 
+                              recipientId: quote.manufacturerId?._id || quote.manufacturerId, 
+                              subject: `Regarding your quote for ${rfq.title}`,
+                              rfqId: rfq._id
+                            } 
+                          })}
+                          className="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-800 text-[10px] font-bold rounded-lg transition-colors"
+                        >
+                          CONTACT
+                        </button>
+                        <button 
+                          onClick={() => handleAcceptQuote(quote)}
+                          className="px-4 py-2 bg-primary hover:bg-primary/90 text-white text-[10px] font-bold rounded-lg shadow-sm transition-all"
+                        >
+                          ACCEPT
+                        </button>
+                      </div>
                     </div>
                   )) : (
                     <p className="text-sm text-slate-400">No quotes received yet.</p>

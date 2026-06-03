@@ -24,7 +24,11 @@ const RegisterPage = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post('/auth/register', formData);
+      const submissionData = {
+        ...formData,
+        email: formData.email.toLowerCase().trim()
+      };
+      const response = await axios.post('/auth/register', submissionData);
       const { user, accessToken, refreshToken } = response.data.data;
       
       setAuth(user, accessToken, refreshToken);
@@ -37,7 +41,7 @@ const RegisterPage = () => {
       if (user.role === 'manufacturer') {
         navigate('/dashboard/manufacturer');
       } else {
-        navigate('/home');
+        navigate('/dashboard');
       }
     } catch (err) {
       setError(err.response?.data?.message || 'Registration failed. Please try again.');

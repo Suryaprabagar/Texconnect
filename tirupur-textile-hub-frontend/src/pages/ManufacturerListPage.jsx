@@ -7,14 +7,15 @@ const ManufacturerListPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  const fetchManufacturers = async () => {
+  const fetchManufacturers = async (queryTerm = '') => {
     setIsLoading(true);
     try {
-      const response = await axios.get('/manufacturers');
+      const response = await axios.get('/manufacturers', {
+        params: queryTerm ? { q: queryTerm } : {}
+      });
       setManufacturers(response.data.data.manufacturers);
     } catch (error) {
       console.error('Error fetching manufacturers:', error);
-      // No mock manufacturers as requested
       setManufacturers([]);
     } finally {
       setIsLoading(false);
@@ -22,8 +23,12 @@ const ManufacturerListPage = () => {
   };
 
   useEffect(() => {
-    fetchManufacturers();
-  }, []);
+    const delayDebounceFn = setTimeout(() => {
+      fetchManufacturers(search);
+    }, 300);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [search]);
 
   return (
     <div className="space-y-10">

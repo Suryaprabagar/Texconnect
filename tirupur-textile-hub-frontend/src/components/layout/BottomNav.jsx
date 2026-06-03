@@ -8,12 +8,12 @@ const BottomNav = () => {
   const isManufacturer = user?.role === 'manufacturer';
 
   const navItems = isManufacturer ? [
-    { name: 'Home', path: '/home', icon: 'home' },
-    { name: 'Leads', path: '/dashboard/manufacturer', icon: 'ads_click' },
+    { name: 'Dashboard', path: '/dashboard/manufacturer', icon: 'dashboard' },
     { name: 'Add', path: '/products/add', icon: 'add_circle' },
+    { name: 'Market', path: '/products', icon: 'storefront' },
     { name: 'Chat', path: '/messages', icon: 'chat' },
   ] : [
-    { name: 'Home', path: '/home', icon: 'home' },
+    { name: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
     { name: 'Market', path: '/products', icon: 'storefront' },
     { name: 'RFQ', path: '/rfqs/create', icon: 'add_box' },
     { name: 'Chat', path: '/messages', icon: 'chat' },

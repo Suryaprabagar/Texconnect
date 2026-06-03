@@ -75,13 +75,7 @@ const TopBar = ({ onMenuClick }) => {
             <span className="material-symbols-outlined">search</span>
           </button>
 
-          <button 
-            onClick={() => addToast('No new notifications', 'info')}
-            className="hover:bg-slate-50 rounded-full p-2 transition-colors relative"
-          >
-            <span className="material-symbols-outlined text-slate-600">notifications</span>
-            <span className="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border-2 border-white"></span>
-          </button>
+
           
           <div className="h-8 w-px bg-slate-200 mx-1 hidden sm:block"></div>
           
