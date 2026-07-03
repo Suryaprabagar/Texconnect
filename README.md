@@ -9,8 +9,9 @@ Strix is integrated into our CI/CD pipeline to perform autonomous security penet
 
 To make the scanning process work, you need to configure the following Secrets in your repository:
 
-1. **`LLM_API_KEY`** (Required): A valid API key for your chosen LLM provider (e.g. Google Gemini, OpenAI, or Anthropic).
+1. **`LLM_API_KEY`** (Required): A valid API key for your chosen LLM provider (e.g. Google Gemini, OpenAI, or Anthropic). The workflow automatically maps this secret to provider-specific environment variables like `GEMINI_API_KEY`, `GOOGLE_API_KEY`, `OPENAI_API_KEY`, and `ANTHROPIC_API_KEY`.
 2. **`STRIX_LLM`** (Optional): The identifier for the LLM provider and model (e.g. `gemini/gemini-2.5-pro` or `openai/gpt-4o`). If not provided, it defaults to `gemini/gemini-2.5-pro`.
+
 
 To configure these:
 1. Go to your repository on GitHub.
