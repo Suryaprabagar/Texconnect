@@ -33,7 +33,7 @@ jobs:
       - name: Run security scan
         env:
           # Configure LLM provider and model. Can be overridden in GitHub Secrets or variables
-          STRIX_LLM: ${{ secrets.STRIX_LLM || 'gemini/gemini-2.5-pro' }}
+          STRIX_LLM: ${{ secrets.STRIX_LLM || 'gemini/gemini-2.5-flash' }}
           # Map LLM_API_KEY to provider-specific variables expected by LiteLLM / Strix
           LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.LLM_API_KEY }}
