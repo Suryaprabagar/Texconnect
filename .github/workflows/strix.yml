@@ -1,0 +1,93 @@
+name: Strix Security Scan
+
+on:
+  pull_request:
+    # Run on all pull requests
+  push:
+    branches:
+      - surya
+  workflow_dispatch:
+    # Allow manual triggering of the workflow from the Actions tab
+
+# Set permissions to read-only for repository contents (least-privilege)
+permissions:
+  contents: read
+
+jobs:
+  strix-scan:
+    name: Strix Penetration Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          # Fetch all history to support diff-scoped scans if desired
+          fetch-depth: 0
+
+      - name: Install Strix
+        run: |
+          echo "Installing Strix..."
+          curl -sSL https://strix.ai/install | bash
+
+      - name: Run security scan
+        env:
+          # Configure LLM provider and model. Can be overridden in GitHub Secrets or variables
+          STRIX_LLM: ${{ secrets.STRIX_LLM || 'gemini/gemini-2.5-flash' }}
+          # Map LLM_API_KEY to provider-specific variables expected by LiteLLM / Strix
+          LLM_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          GOOGLE_API_KEY: ${{ secrets.LLM_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.LLM_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.LLM_API_KEY }}
+        run: |
+          # Disable immediate exit on error to capture the custom exit code of Strix
+          set +e
+          strix -n -t ./
+          EXIT_CODE=$?
+          set -e
+
+          # Exit code 0: success, no vulnerabilities
+          # Exit code 2: success, vulnerabilities found
+          # Any other non-zero exit code indicates a configuration or runtime error
+          if [ $EXIT_CODE -ne 0 ] && [ $EXIT_CODE -ne 2 ]; then
+            echo "Strix scan failed with exit code $EXIT_CODE (system or runtime error)"
+            exit $EXIT_CODE
+          fi
+          
+          echo "Strix completed scanning. Exit code was: $EXIT_CODE"
+
+      - name: Check severity and fail on Critical or High issues
+        run: |
+          # Locate the findings.json file in the strix_runs/ directory
+          FINDINGS_FILE=$(find strix_runs -name findings.json | head -n 1)
+
+          if [ -n "$FINDINGS_FILE" ] && [ -f "$FINDINGS_FILE" ]; then
+            echo "Analyzing findings in $FINDINGS_FILE..."
+            
+            # Robust jq parsing to get all severity levels
+            SEVERITIES=$(jq -r 'if type == "array" then .[].severity elif type == "object" and .findings then .findings[].severity else empty end' "$FINDINGS_FILE")
+            
+            echo "Vulnerabilities found:"
+            echo "$SEVERITIES" | sed 's/^/  - /'
+            
+            # Filter and count critical/high vulnerabilities (case-insensitive)
+            CRITICAL_HIGH_COUNT=$(echo "$SEVERITIES" | grep -Ei "^(critical|high)$" | wc -l)
+            echo "Number of critical/high severity vulnerabilities: $CRITICAL_HIGH_COUNT"
+            
+            if [ "$CRITICAL_HIGH_COUNT" -gt 0 ]; then
+              echo "FAIL: Strix detected $CRITICAL_HIGH_COUNT critical or high-severity vulnerabilities!"
+              exit 1
+            fi
+            echo "Success: No critical or high-severity vulnerabilities detected."
+          else
+            echo "No findings.json found or no vulnerabilities detected."
+          fi
+
+      - name: Upload Scan Results Artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: strix-scan-results
+          path: strix_runs/
+          if-no-files-found: ignore
